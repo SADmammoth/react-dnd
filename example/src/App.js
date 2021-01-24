@@ -1,9 +1,30 @@
 import React from 'react'
 
-import { DragMap, DraggableElement } from '@sadmammoth/react-dnd'
+import { DragMap, DraggableElement, DraggableList } from '@sadmammoth/react-dnd'
 import cells from './cells'
 
 const App = () => {
+  const createDraggableElement = (index) => {
+    return (
+      <DraggableElement
+        id={index}
+        key={index}
+        className='draggable'
+        onReject={(data) => {
+          console.log(data, 'onReject')
+        }}
+        data={{ myIndex: index }}
+        onDragStart={(data) => {
+          console.log(data, 'onDragStart')
+        }}
+        avatar={<div className='avatar'>User avatar {index}</div>}
+        rootElement={document}
+      >
+        User {index}
+      </DraggableElement>
+    )
+  }
+
   return (
     <>
       <DragMap
@@ -21,20 +42,15 @@ const App = () => {
         map={cells}
         snapToGrid={true}
       />
-      <DraggableElement
-        className='draggable'
-        onReject={(data) => {
-          console.log(data, 'onReject')
+      {createDraggableElement(0)}
+      <DraggableList
+        id='list'
+        list={[1, 2, 3].map((num) => createDraggableElement(num))}
+        onOrderChange={(data) => {
+          console.log(data, 'onOrderChange')
         }}
-        data={{ user: 'user' }}
-        onDragStart={(data) => {
-          console.log(data, 'onDragStart')
-        }}
-        avatar={<div className='avatar'>User avatar</div>}
-        rootElement={document}
-      >
-        User
-      </DraggableElement>
+        indexKey='myIndex'
+      />
     </>
   )
 }

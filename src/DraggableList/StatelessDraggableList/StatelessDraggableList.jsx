@@ -1,11 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import shortid from 'shortid'
 import ListDropArea from './ListDropArea'
 
-function DraggableList({ list, onOrderChange, dragging }) {
-  const [id] = useState(shortid.generate())
-
+function StatelessDraggableList({ id, list, onOrderChange, dragging }) {
   return [
     <ListDropArea
       key={id + 0}
@@ -15,7 +12,7 @@ function DraggableList({ list, onOrderChange, dragging }) {
     />,
     ...list
       .map((item, i) => {
-        if (i === dragging) {
+        if (item.props.id === dragging) {
           return item
         } else {
           return [
@@ -33,11 +30,12 @@ function DraggableList({ list, onOrderChange, dragging }) {
   ]
 }
 
-DraggableList.propTypes = {
+StatelessDraggableList.propTypes = {
   list: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.node, PropTypes.func]))
     .isRequired,
   onOrderChange: PropTypes.func.isRequired,
-  dragging: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  dragging: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  id: PropTypes.string.isRequired
 }
 
-export default DraggableList
+export default StatelessDraggableList

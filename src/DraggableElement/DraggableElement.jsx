@@ -92,7 +92,7 @@ class DraggableElement extends React.Component {
         }
       },
       () => {
-        setTimeout(() => this.props.onDragStart(), 0)
+        setTimeout(() => this.props.onDragStart(this.props.data), 0)
         const timeout = setTimeout(() => {
           this.setState({
             dragging: true
@@ -117,6 +117,8 @@ class DraggableElement extends React.Component {
     }
     if (event.dataTransfer.dropEffect === 'none') {
       this.props.onReject(this.props.data)
+    } else {
+      this.props.onDragEnd(this.props.data)
     }
 
     this.reset()
@@ -232,17 +234,19 @@ DraggableElement.propTypes = {
   data: PropTypes.object,
   dropEffect: PropTypes.string,
   onDragStart: PropTypes.func,
+  onDragEnd: PropTypes.func,
   onReject: PropTypes.func,
   style: PropTypes.objectOf(PropTypes.string),
   className: PropTypes.string,
   avatar: PropTypes.element,
   height: PropTypes.number,
-  rootElement: PropTypes.element
+  rootElement: PropTypes.object
 }
 
 DraggableElement.defaultProps = {
   onReject: () => {},
   onDragStart: () => {},
+  onDragEnd: () => {},
   style: {},
   height: 1,
   rootElement: document.getElementById('root')

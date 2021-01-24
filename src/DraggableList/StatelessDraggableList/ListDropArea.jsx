@@ -1,15 +1,17 @@
 import React from 'react'
-import DropArea from '../DropArea'
+import DropArea from '../../DropArea'
 import PropTypes from 'prop-types'
 
 const ListDropArea = ({ index, id, onOrderChange }) => {
   return (
     <DropArea
-      key={index+id}
+      key={id}
+      id={id}
       className='list-droparea'
       index={{ x: index, y: 0 }}
       setData={(data) => {
-        onOrderChange(data)
+        const { index, ...rest } = data
+        onOrderChange({ index: index.x, ...rest })
       }}
       checkSnap={(index, height, hovered) => hovered}
     />
