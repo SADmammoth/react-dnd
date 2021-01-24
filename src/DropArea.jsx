@@ -36,7 +36,6 @@ const DropArea = (props) => {
   }
 
   const onDragLeave = () => {
-    console.log(0)
     setHovered(false)
     const dragging = document.getElementById('dragging')
     if (dragging) dragging.removeAttribute('data-snap')
@@ -44,7 +43,7 @@ const DropArea = (props) => {
 
   const onDrop = (e) => {
     setHovered(false)
-    let data = JSON.parse(e.dataTransfer.getData('application/json'))
+    const data = JSON.parse(e.dataTransfer.getData('application/json'))
     setData({
       index,
       ...data

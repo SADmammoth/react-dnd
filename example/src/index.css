@@ -2,3 +2,13 @@
   border: solid 2px black;
   height: 50px;
 }
+
+.draggable {
+  border: 2px red solid;
+  height: 50px;
+}
+
+.avatar {
+  border: 2px green solid;
+  height: 50px;
+}

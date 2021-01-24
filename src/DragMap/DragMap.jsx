@@ -12,7 +12,8 @@ const DragMap = (props) => {
     reassignAvatar,
     onDataUpdate,
     createAvatar,
-    hiddenClass
+    hiddenClass,
+    snapToGrid
   } = props
 
   useEffect(() => {
@@ -39,7 +40,16 @@ const DragMap = (props) => {
     [JSON.stringify(body), columns]
   )
 
-  return <>{drawBody(body, setData, checkSnapping, hiddenClass)}</>
+  return (
+    <>
+      {drawBody(
+        body,
+        setData,
+        snapToGrid ? checkSnapping : () => false,
+        hiddenClass
+      )}
+    </>
+  )
 }
 
 DragMap.propTypes = {
@@ -66,7 +76,12 @@ DragMap.propTypes = {
   onDataUpdate: PropTypes.func.isRequired,
   createAvatar: PropTypes.func.isRequired,
   className: PropTypes.string,
-  hiddenClass: PropTypes.string
+  hiddenClass: PropTypes.string,
+  snapToGrid: PropTypes.bool
+}
+
+DragMap.defaultProps = {
+  snapToGrid: false
 }
 
 export default DragMap

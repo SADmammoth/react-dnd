@@ -1,5 +1,8 @@
 import React from 'react'
+
+import setDragImage from './helpers/setDragImage'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 
 class DraggableElement extends React.Component {
   constructor(props) {
@@ -22,11 +25,11 @@ class DraggableElement extends React.Component {
 
   componentDidMount() {
     this.reset()
-    document.getElementById('root').addEventListener('dragover', this.mouseMove)
+    this.props.rootElement.addEventListener('dragover', this.mouseMove)
   }
 
   componentWillUnmount() {
-    document
+    this.props.rootElement
       .getElementById('root')
       .removeEventListener('dragover', this.mouseMove)
   }
@@ -67,10 +70,6 @@ class DraggableElement extends React.Component {
     return div.children[0]
   }
 
-  setDragImage(event) {
-    event.dataTransfer.setDragImage(document.createElement('div'), 0, 0)
-  }
-
   setData(event) {
     event.dataTransfer.setData(
       'application/json',
@@ -79,7 +78,7 @@ class DraggableElement extends React.Component {
   }
 
   mouseDown = (event) => {
-    this.setDragImage(event)
+    setDragImage(event)
     this.setData(event)
 
     this.setState(
@@ -93,7 +92,7 @@ class DraggableElement extends React.Component {
         }
       },
       () => {
-        setTimeout(() => this.props.onDragStart && this.props.onDragStart(), 0)
+        setTimeout(() => this.props.onDragStart(), 0)
         const timeout = setTimeout(() => {
           this.setState({
             dragging: true
@@ -229,8 +228,24 @@ class DraggableElement extends React.Component {
   }
 }
 
+DraggableElement.propTypes = {
+  data: PropTypes.object,
+  dropEffect: PropTypes.string,
+  onDragStart: PropTypes.func,
+  onReject: PropTypes.func,
+  style: PropTypes.objectOf(PropTypes.string),
+  className: PropTypes.string,
+  avatar: PropTypes.element,
+  height: PropTypes.number,
+  rootElement: PropTypes.element
+}
+
 DraggableElement.defaultProps = {
-  onReject: () => {}
+  onReject: () => {},
+  onDragStart: () => {},
+  style: {},
+  height: 1,
+  rootElement: document.getElementById('root')
 }
 
 export default DraggableElement
