@@ -3,7 +3,13 @@ import classNames from 'classnames'
 import DropArea from '../DropArea'
 import elementsTypes from '../elementsTypes'
 
-export default function drawBody(body, setData, checkSnap, hiddenClass) {
+export default function drawBody(
+  body,
+  setData,
+  checkSnap,
+  hiddenClass,
+  accept
+) {
   return body.map((child) => {
     if (!child) {
       return child
@@ -26,6 +32,7 @@ export default function drawBody(body, setData, checkSnap, hiddenClass) {
           })}
           setData={setData}
           checkSnap={checkSnap}
+          accept={accept}
         />
       )
     } else {

@@ -188,10 +188,16 @@ class DraggableElement extends React.Component {
 
   render() {
     const { style, dragging } = this.state
-    let { avatar, className, style: propsStyle } = this.props
+    let { avatar, className, style: propsStyle, data } = this.props
     if (!propsStyle) {
       propsStyle = []
     }
+
+    const attributes = Object.fromEntries(
+      Object.entries(data).filter(([dataKey, dataValue]) =>
+        dataKey.startsWith('data-')
+      )
+    )
 
     return (
       <div
@@ -223,6 +229,7 @@ class DraggableElement extends React.Component {
         data-height={this.props.height}
         onDragStart={this.mouseDown}
         onDragEnd={this.mouseUp}
+        {...attributes}
       >
         {dragging && avatar ? avatar : this.props.children}
       </div>

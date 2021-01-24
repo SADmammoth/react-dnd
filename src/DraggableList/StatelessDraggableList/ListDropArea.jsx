@@ -2,7 +2,7 @@ import React from 'react'
 import DropArea from '../../DropArea'
 import PropTypes from 'prop-types'
 
-const ListDropArea = ({ index, id, onOrderChange }) => {
+const ListDropArea = ({ index, id, onOrderChange, accept }) => {
   return (
     <DropArea
       key={id}
@@ -14,6 +14,7 @@ const ListDropArea = ({ index, id, onOrderChange }) => {
         onOrderChange({ index: index.x, ...rest })
       }}
       checkSnap={(index, height, hovered) => hovered}
+      accept={accept}
     />
   )
 }
@@ -21,7 +22,8 @@ const ListDropArea = ({ index, id, onOrderChange }) => {
 ListDropArea.propTypes = {
   index: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
-  onOrderChange: PropTypes.func.isRequired
+  onOrderChange: PropTypes.func.isRequired,
+  accept: PropTypes.object
 }
 
 export default ListDropArea

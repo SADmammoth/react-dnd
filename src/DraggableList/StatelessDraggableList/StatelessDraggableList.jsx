@@ -1,29 +1,15 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-import ListDropArea from './ListDropArea'
+import createDropArea from './createDropArea'
 
-function StatelessDraggableList({ id, list, onOrderChange, dragging }) {
+function StatelessDraggableList({ id, list, onOrderChange, dragging, accept }) {
   return [
-    <ListDropArea
-      key={id + 0}
-      id={id + 0}
-      index={0}
-      onOrderChange={onOrderChange}
-    />,
+    createDropArea(id, 0, onOrderChange, accept),
     ...list
       .map((item, i) => {
         if (item.props.id === dragging) {
           return item
         } else {
-          return [
-            item,
-            <ListDropArea
-              key={id + (i + 1)}
-              id={id + (i + 1)}
-              index={i + 1}
-              onOrderChange={onOrderChange}
-            />
-          ]
+          return [item, createDropArea(id, i, onOrderChange, accept)]
         }
       })
       .flat()
@@ -35,7 +21,8 @@ StatelessDraggableList.propTypes = {
     .isRequired,
   onOrderChange: PropTypes.func.isRequired,
   dragging: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
+  accept: PropTypes.object
 }
 
 export default StatelessDraggableList

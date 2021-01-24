@@ -13,7 +13,8 @@ const DragMap = (props) => {
     onDataUpdate,
     createAvatar,
     hiddenClass,
-    snapToGrid
+    snapToGrid,
+    accept
   } = props
 
   useEffect(() => {
@@ -46,7 +47,8 @@ const DragMap = (props) => {
         body,
         setData,
         snapToGrid ? checkSnapping : () => false,
-        hiddenClass
+        hiddenClass,
+        accept
       )}
     </>
   )
@@ -77,7 +79,8 @@ DragMap.propTypes = {
   createAvatar: PropTypes.func.isRequired,
   className: PropTypes.string,
   hiddenClass: PropTypes.string,
-  snapToGrid: PropTypes.bool
+  snapToGrid: PropTypes.bool,
+  accept: PropTypes.object
 }
 
 DragMap.defaultProps = {

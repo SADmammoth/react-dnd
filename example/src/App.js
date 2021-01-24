@@ -4,7 +4,7 @@ import { DragMap, DraggableElement, DraggableList } from '@sadmammoth/react-dnd'
 import cells from './cells'
 
 const App = () => {
-  const createDraggableElement = (index) => {
+  const createDraggableElement = (index, secret, openCode) => {
     return (
       <DraggableElement
         id={index}
@@ -13,7 +13,7 @@ const App = () => {
         onReject={(data) => {
           console.log(data, 'onReject')
         }}
-        data={{ myIndex: index }}
+        data={{ secret, 'data-code': openCode, myIndex: index }}
         onDragStart={(data) => {
           console.log(data, 'onDragStart')
         }}
@@ -41,15 +41,19 @@ const App = () => {
         }}
         map={cells}
         snapToGrid={true}
+        accept={{ secret: 'code1', 'data-code': 'openCode1' }}
       />
-      {createDraggableElement(0)}
+      {createDraggableElement(0, 'code1', 'openCode1')}
       <DraggableList
         id='list'
-        list={[1, 2, 3].map((num) => createDraggableElement(num))}
+        list={[1, 2, 3].map((num) =>
+          createDraggableElement(num, 'code2', 'openCode2')
+        )}
         onOrderChange={(data) => {
           console.log(data, 'onOrderChange')
         }}
         indexKey='myIndex'
+        accept={{ secret: 'code2', 'data-code': 'openCode2' }}
       />
     </>
   )

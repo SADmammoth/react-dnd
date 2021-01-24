@@ -4,7 +4,7 @@ import useList from './useList'
 import PropTypes from 'prop-types'
 import StatelessDraggableList from './StatelessDraggableList'
 
-function DraggableList({ list, onOrderChange, id, indexKey }) {
+function DraggableList({ list, onOrderChange, id, indexKey, accept }) {
   const [items, dragging, reorderList] = useList(list)
 
   const reorderItems = useCallback(
@@ -20,6 +20,7 @@ function DraggableList({ list, onOrderChange, id, indexKey }) {
       list={items}
       onOrderChange={reorderItems}
       dragging={dragging}
+      accept={accept}
     />
   )
 }
@@ -29,7 +30,8 @@ DraggableList.propTypes = {
     .isRequired,
   onOrderChange: PropTypes.func,
   id: PropTypes.string.isRequired,
-  indexKey: PropTypes.string.isRequired
+  indexKey: PropTypes.string.isRequired,
+  accept: PropTypes.object
 }
 
 DraggableList.defaultProps = {
