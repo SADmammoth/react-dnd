@@ -54,5 +54,12 @@
     "classnames": "^2.2.6",
     "prop-types": "^15.7.2",
     "shortid": "^2.2.16"
+  },
+  "bit": {
+    "env": {
+      "compiler": "bit.envs/compilers/react@1.0.21"
+    },
+    "componentsDefaultDirectory": "components/{name}",
+    "packageManager": "npm"
   }
 }
