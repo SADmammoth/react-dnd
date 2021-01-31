@@ -11,13 +11,13 @@ class DraggableElement extends React.Component {
       style: {
         left: 0,
         top: 0,
-        containment: "window",
+        containment: "window"
       },
       lastPos: {
         x: null,
-        y: null,
+        y: null
       },
-      dragging: false,
+      dragging: false
     };
 
     this.dragged = React.createRef();
@@ -38,27 +38,27 @@ class DraggableElement extends React.Component {
     this.setState(
       {
         style: {
-          position: "static",
+          position: "static"
         },
 
-        dragging: false,
+        dragging: false
       },
       () => {
         const { current: dragged } = this.dragged;
         const draggedRect = dragged.getBoundingClientRect();
 
-        this.setState((state) => ({
+        this.setState(state => ({
           ...state,
           style: {
             ...state.style,
             cursor: "grab",
             left: draggedRect.left + window.scrollX + "px",
-            top: draggedRect.top + window.scrollY + "px",
+            top: draggedRect.top + window.scrollY + "px"
           },
           lastPos: {
             x: null,
-            y: null,
-          },
+            y: null
+          }
         }));
       }
     );
@@ -76,23 +76,23 @@ class DraggableElement extends React.Component {
       JSON.stringify({
         ...this.props.data,
         height: this.props.height,
-        dropEffect: this.props.dropEffect,
+        dropEffect: this.props.dropEffect
       })
     );
   }
 
-  mouseDown = (event) => {
+  mouseDown = event => {
     setDragImage(event);
     this.setData(event);
 
     this.setState(
-      (state) => {
+      state => {
         return {
           ...state,
           style: {
             ...state.style,
-            position: "absolute",
-          },
+            position: "absolute"
+          }
         };
       },
       () => {
@@ -102,11 +102,11 @@ class DraggableElement extends React.Component {
         );
         const timeout = setTimeout(() => {
           this.setState({
-            dragging: true,
+            dragging: true
           });
         }, 300);
         this.setState({
-          timeout,
+          timeout
         });
       }
     );
@@ -117,7 +117,7 @@ class DraggableElement extends React.Component {
     });
   };
 
-  mouseUp = (event) => {
+  mouseUp = event => {
     if (!this.state.dragging) {
       clearTimeout(this.state.timeout);
       this.setState({ timeout: undefined });
@@ -131,7 +131,7 @@ class DraggableElement extends React.Component {
     this.reset();
   };
 
-  mouseMove = (event) => {
+  mouseMove = event => {
     if (this.state.dragging && this.dragged.current) {
       if (this.state.lastPos.x === null) {
         const { width, height } = this.dragged.current.getBoundingClientRect();
@@ -141,12 +141,12 @@ class DraggableElement extends React.Component {
           style: {
             ...this.state.style,
             left: event.pageX - width / 2,
-            top: event.pageY - height / 2,
+            top: event.pageY - height / 2
           },
           lastPos: {
             x: event.pageX,
-            y: event.pageY,
-          },
+            y: event.pageY
+          }
         });
         return;
       }
@@ -161,17 +161,17 @@ class DraggableElement extends React.Component {
             ...this.state.style,
             pointerEvents: "none",
             left: left + "px",
-            top: top + "px",
+            top: top + "px"
           },
           lastPos: {
             x: parseInt(left) + width / 2,
-            y: parseInt(top) + height / 2,
-          },
+            y: parseInt(top) + height / 2
+          }
         });
         return;
       }
 
-      this.setState((state) => {
+      this.setState(state => {
         const diffX = state.lastPos.x - event.pageX;
         const diffY = state.lastPos.y - event.pageY;
         if (Math.abs(diffX) > 2 || Math.abs(diffY) > 2) {
@@ -181,12 +181,12 @@ class DraggableElement extends React.Component {
               ...state.style,
               pointerEvents: "none",
               left: parseInt(state.style.left) - diffX + "px",
-              top: parseInt(state.style.top) - diffY + "px",
+              top: parseInt(state.style.top) - diffY + "px"
             },
             lastPos: {
               x: event.pageX,
-              y: event.pageY,
-            },
+              y: event.pageY
+            }
           };
         }
       });
@@ -217,8 +217,8 @@ class DraggableElement extends React.Component {
           this.setState({
             style: {
               ...this.state.style,
-              cursor: "grabbing",
-            },
+              cursor: "grabbing"
+            }
           });
         }}
         onMouseUp={() => {
@@ -229,8 +229,8 @@ class DraggableElement extends React.Component {
           this.setState({
             style: {
               ...this.state.style,
-              cursor: "grab",
-            },
+              cursor: "grab"
+            }
           });
         }}
         data-height={this.props.height}
@@ -254,7 +254,7 @@ DraggableElement.propTypes = {
   className: PropTypes.string,
   avatar: PropTypes.element,
   height: PropTypes.number,
-  rootElement: PropTypes.object,
+  rootElement: PropTypes.object
 };
 
 DraggableElement.defaultProps = {
@@ -263,7 +263,7 @@ DraggableElement.defaultProps = {
   onDragEnd: () => {},
   style: {},
   height: 1,
-  rootElement: document.getElementById("root"),
+  rootElement: document.getElementById("root")
 };
 
 export default DraggableElement;

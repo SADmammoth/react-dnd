@@ -15,5 +15,5 @@ export {
   StatelessDraggableList,
   DragMap,
   DragGrid,
-  elementsTypes,
+  elementsTypes
 };

@@ -10,7 +10,7 @@ export default function drawBody(
   hiddenClass,
   accept
 ) {
-  return body.map((child) => {
+  return body.map(child => {
     if (!child) {
       return child;
     }
@@ -27,7 +27,7 @@ export default function drawBody(
           key={key}
           index={index}
           className={classNames(className, {
-            [hiddenClass]: type === elementsTypes.hidden,
+            [hiddenClass]: type === elementsTypes.hidden
           })}
           setData={setData}
           checkSnap={checkSnap}

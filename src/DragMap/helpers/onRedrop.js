@@ -17,12 +17,12 @@ export default function onRedrop(
 
   newBody.splice(toLinearIndex(originalIndex, columns), 1, {
     ...bodyItem,
-    type: elementsTypes.dropArea,
+    type: elementsTypes.dropArea
   });
   newBody.splice(toLinearIndex(index, columns), 1, {
     ...newBody[toLinearIndex(index, columns)],
     type: elementsTypes.avatar,
-    avatar,
+    avatar
   });
 
   return onReassign(newBody, originalIndex, index, height);

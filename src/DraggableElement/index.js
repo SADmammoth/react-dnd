@@ -1,3 +1,3 @@
-import DraggableElement from './DraggableElement'
+import DraggableElement from "./DraggableElement";
 
-export default DraggableElement
+export default DraggableElement;

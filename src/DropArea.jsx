@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 
-const DropArea = (props) => {
+const DropArea = props => {
   const [hovered, setHovered] = useState(false);
 
   const {
@@ -11,11 +11,11 @@ const DropArea = (props) => {
     className,
     style,
     children,
-    accept,
+    accept
   } = props;
 
   const onDragOver = useCallback(
-    (e) => {
+    e => {
       const dragging = document.getElementById("dragging");
 
       if (!dragging) {
@@ -46,15 +46,11 @@ const DropArea = (props) => {
 
           dragging.setAttribute(
             "data-snap",
-            `${
-              left +
+            `${left +
               window.scrollX +
-              parseInt(getComputedStyle(e.target).paddingLeft)
-            },${
-              top +
+              parseInt(getComputedStyle(e.target).paddingLeft)},${top +
               window.scrollY +
-              parseInt(getComputedStyle(e.target).paddingTop)
-            }`
+              parseInt(getComputedStyle(e.target).paddingTop)}`
           );
         }
 
@@ -78,7 +74,7 @@ const DropArea = (props) => {
   }, [hovered]);
 
   const onDrop = useCallback(
-    (e) => {
+    e => {
       if (hovered) {
         setHovered(false);
         const data = JSON.parse(e.dataTransfer.getData("application/json"));
@@ -94,7 +90,7 @@ const DropArea = (props) => {
           setData({
             ...data,
             index,
-            originalIndex,
+            originalIndex
           });
         }
 
@@ -128,11 +124,11 @@ DropArea.propTypes = {
   style: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   ),
-  accept: PropTypes.object,
+  accept: PropTypes.object
 };
 
 DropArea.defaultProps = {
-  accept: {},
+  accept: {}
 };
 
 export default DropArea;

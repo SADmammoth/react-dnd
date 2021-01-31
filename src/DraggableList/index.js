@@ -1,3 +1,3 @@
-import DraggableList from './DraggableList'
+import DraggableList from "./DraggableList";
 
-export default DraggableList
+export default DraggableList;

@@ -1,5 +1,5 @@
-import toLinearIndex from './toLinearIndex'
-import elementsTypes from '../../elementsTypes'
+import toLinearIndex from "./toLinearIndex";
+import elementsTypes from "../../elementsTypes";
 
 export default function checkSnap(
   index,
@@ -10,17 +10,17 @@ export default function checkSnap(
   useHeight = true
 ) {
   if (!useHeight) {
-    return hovered
+    return hovered;
   }
-  let indBuff
-  let curr
+  let indBuff;
+  let curr;
   for (let i = index.x; i < index.x + height; i++) {
-    indBuff = toLinearIndex({ x: i, y: index.y }, columns)
+    indBuff = toLinearIndex({ x: i, y: index.y }, columns);
 
-    curr = body[indBuff]
+    curr = body[indBuff];
     if (!curr || curr.type !== elementsTypes.dropArea) {
-      return false
+      return false;
     }
   }
-  return true
+  return true;
 }

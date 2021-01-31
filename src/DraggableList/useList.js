@@ -1,30 +1,30 @@
-import { useState, useCallback } from 'react'
-import draggingStateProxy from './draggingStateProxy'
+import { useState, useCallback } from "react";
+import draggingStateProxy from "./draggingStateProxy";
 
 export default function useList(list) {
-  const [dragging, setDragging] = useState(null)
-  const [items, setItems] = useState(draggingStateProxy(list, setDragging))
+  const [dragging, setDragging] = useState(null);
+  const [items, setItems] = useState(draggingStateProxy(list, setDragging));
 
   const reorderItems = useCallback(
     (sourceId, destinationIndex) => {
       const sourceIndex = items.findIndex(
         ({ props: { id: candidateId } }) => candidateId === sourceId
-      )
+      );
 
-      const newItems = [...items]
+      const newItems = [...items];
       if (sourceIndex < 0 || destinationIndex < 0) {
-        return
+        return;
       }
 
-      newItems.splice(destinationIndex, 0, newItems.splice(sourceIndex, 1)[0])
-      const ids = newItems.map((item) => item.props.id)
+      newItems.splice(destinationIndex, 0, newItems.splice(sourceIndex, 1)[0]);
+      const ids = newItems.map(item => item.props.id);
 
-      setItems(newItems)
+      setItems(newItems);
 
-      return { ids, destinationIndex, sourceIndex }
+      return { ids, destinationIndex, sourceIndex };
     },
     [items]
-  )
+  );
 
-  return [items, dragging, reorderItems]
+  return [items, dragging, reorderItems];
 }

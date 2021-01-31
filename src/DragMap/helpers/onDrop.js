@@ -17,9 +17,9 @@ export default function onDrop(
   const { height, index, originalIndex } = data;
   let array = [...body];
 
-  array = mapHeight(index, height, columns, array, (item) => ({
+  array = mapHeight(index, height, columns, array, item => ({
     ...item,
-    type: elementsTypes.hidden,
+    type: elementsTypes.hidden
   }));
 
   if (data.dropEffect === "reassign") {
@@ -39,7 +39,7 @@ export default function onDrop(
   array[linearIndex] = {
     ...array[linearIndex],
     ...createAvatar(data, height),
-    type: elementsTypes.avatar,
+    type: elementsTypes.avatar
   };
 
   console.log(array);

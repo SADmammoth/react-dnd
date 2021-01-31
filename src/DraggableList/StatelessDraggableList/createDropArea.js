@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-import ListDropArea from './ListDropArea'
+import ListDropArea from "./ListDropArea";
 
 export default function createDropArea(id, index, onOrderChange, accept) {
   return (
@@ -11,5 +11,5 @@ export default function createDropArea(id, index, onOrderChange, accept) {
       onOrderChange={onOrderChange}
       accept={accept}
     />
-  )
+  );
 }

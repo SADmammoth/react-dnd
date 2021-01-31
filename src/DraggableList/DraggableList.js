@@ -1,18 +1,18 @@
-import React, { useCallback } from 'react'
+import React, { useCallback } from "react";
 
-import useList from './useList'
-import PropTypes from 'prop-types'
-import StatelessDraggableList from './StatelessDraggableList'
+import useList from "./useList";
+import PropTypes from "prop-types";
+import StatelessDraggableList from "./StatelessDraggableList";
 
 function DraggableList({ list, onOrderChange, id, indexKey, accept }) {
-  const [items, dragging, reorderList] = useList(list)
+  const [items, dragging, reorderList] = useList(list);
 
   const reorderItems = useCallback(
     ({ [indexKey]: sourceId, index: destinationIndex }) => {
-      onOrderChange(reorderList(sourceId, destinationIndex))
+      onOrderChange(reorderList(sourceId, destinationIndex));
     },
     [items]
-  )
+  );
 
   return (
     <StatelessDraggableList
@@ -22,7 +22,7 @@ function DraggableList({ list, onOrderChange, id, indexKey, accept }) {
       dragging={dragging}
       accept={accept}
     />
-  )
+  );
 }
 
 DraggableList.propTypes = {
@@ -32,10 +32,10 @@ DraggableList.propTypes = {
   id: PropTypes.string.isRequired,
   indexKey: PropTypes.string.isRequired,
   accept: PropTypes.object
-}
+};
 
 DraggableList.defaultProps = {
   onOrderChange: () => {}
-}
+};
 
-export default DraggableList
+export default DraggableList;

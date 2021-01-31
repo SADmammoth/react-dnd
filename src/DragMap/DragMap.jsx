@@ -4,7 +4,7 @@ import drawBody from "./drawBody";
 import checkSnap from "./helpers/checkSnap";
 import PropTypes from "prop-types";
 
-const DragMap = (props) => {
+const DragMap = props => {
   const [body, setBody] = useState([]);
   const {
     columns,
@@ -17,7 +17,7 @@ const DragMap = (props) => {
     accept,
     indexKey,
     className,
-    style,
+    style
   } = props;
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const DragMap = (props) => {
   }, [JSON.stringify(map)]);
 
   const setData = useCallback(
-    (data) =>
+    data =>
       onDrop(
         data,
         body,
@@ -70,11 +70,11 @@ DragMap.propTypes = {
           className: PropTypes.string,
           index: PropTypes.shape({
             x: PropTypes.number,
-            y: PropTypes.number,
+            y: PropTypes.number
           }),
           key: PropTypes.string.isRequired,
-          avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-        }),
+          avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
+        })
       ])
     )
   ).isRequired,
@@ -85,11 +85,11 @@ DragMap.propTypes = {
   hiddenClass: PropTypes.string,
   snapToGrid: PropTypes.bool,
   accept: PropTypes.object,
-  indexKey: PropTypes.string,
+  indexKey: PropTypes.string
 };
 
 DragMap.defaultProps = {
-  snapToGrid: false,
+  snapToGrid: false
 };
 
 export default DragMap;
