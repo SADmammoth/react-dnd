@@ -1,7 +1,7 @@
-import React from 'react'
-import classNames from 'classnames'
-import DropArea from '../DropArea'
-import elementsTypes from '../elementsTypes'
+import React from "react";
+import classNames from "classnames";
+import DropArea from "../DropArea";
+import elementsTypes from "../elementsTypes";
 
 export default function drawBody(
   body,
@@ -12,14 +12,13 @@ export default function drawBody(
 ) {
   return body.map((child) => {
     if (!child) {
-      return child
+      return child;
     }
 
-    const { type, key, index, className } = child
+    const { type, key, index, className, style } = child;
 
-    if (type === elementsTypes.avatar) {
-      return child.avatar
-    } else if (
+    if (
+      type === elementsTypes.avatar ||
       type === elementsTypes.dropArea ||
       type === elementsTypes.hidden
     ) {
@@ -28,15 +27,18 @@ export default function drawBody(
           key={key}
           index={index}
           className={classNames(className, {
-            [hiddenClass]: type === elementsTypes.hidden
+            [hiddenClass]: type === elementsTypes.hidden,
           })}
           setData={setData}
           checkSnap={checkSnap}
           accept={accept}
-        />
-      )
+          style={style}
+        >
+          {child.avatar}
+        </DropArea>
+      );
     } else {
-      return child
+      return child;
     }
-  })
+  });
 }

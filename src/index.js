@@ -1,11 +1,12 @@
-import DropArea from './DropArea'
+import DropArea from "./DropArea";
 
-import StatelessDraggableList from './DraggableList/StatelessDraggableList'
+import StatelessDraggableList from "./DraggableList/StatelessDraggableList";
 
-import elementsTypes from './elementsTypes'
-import DraggableElement from './DraggableElement'
-import DragMap from './DragMap'
-import DraggableList from './DraggableList'
+import elementsTypes from "./elementsTypes";
+import DraggableElement from "./DraggableElement";
+import DragMap from "./DragMap";
+import DraggableList from "./DraggableList";
+import DragGrid from "./DragGrid";
 
 export {
   DropArea,
@@ -13,5 +14,6 @@ export {
   DraggableElement,
   StatelessDraggableList,
   DragMap,
-  elementsTypes
-}
+  DragGrid,
+  elementsTypes,
+};

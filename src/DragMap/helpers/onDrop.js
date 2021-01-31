@@ -1,5 +1,7 @@
-import toLinearIndex from './toLinearIndex'
-import elementsTypes from '../../elementsTypes'
+import toLinearIndex from "./toLinearIndex";
+import elementsTypes from "../../elementsTypes";
+import onRedrop from "./onRedrop";
+import mapHeight from "./mapHeight";
 
 export default function onDrop(
   data,
@@ -8,37 +10,40 @@ export default function onDrop(
   columns,
   reassignAvatar,
   onDataUpdate,
-  createAvatar
+  createAvatar,
+  indexKey
 ) {
-  const { height, index, originalIndex } = data
-  const array = [...body]
-  let curr = null
+  console.log(data, indexKey);
+  const { height, index, originalIndex } = data;
+  let array = [...body];
 
-  let indBuff
+  array = mapHeight(index, height, columns, array, (item) => ({
+    ...item,
+    type: elementsTypes.hidden,
+  }));
 
-  for (let i = index.x; i < index.x + height; i++) {
-    indBuff = toLinearIndex({ x: i, y: index.y }, columns)
-
-    curr = array[indBuff]
-
-    if (!curr && curr.type !== elementsTypes.dropArea) {
-      return
-    }
-
-    array[indBuff] = { ...array[indBuff], type: elementsTypes.hidden }
+  if (data.dropEffect === "reassign") {
+    array = onRedrop(
+      columns,
+      originalIndex,
+      index,
+      height,
+      array,
+      reassignAvatar
+    );
+    onDataUpdate(data, array);
+    return;
   }
 
-  if (data.dropEffect === 'reassign') {
-    reassignAvatar(originalIndex, index, height)
-    onDataUpdate(data)
-    return
-  }
-
-  array[toLinearIndex(index)] = {
+  const linearIndex = toLinearIndex(index, columns);
+  array[linearIndex] = {
+    ...array[linearIndex],
+    ...createAvatar(data, height),
     type: elementsTypes.avatar,
-    avatar: createAvatar(data, height)
-  }
+  };
 
-  setBody(array)
-  onDataUpdate(data)
+  console.log(array);
+
+  setBody(array);
+  onDataUpdate(data, array);
 }

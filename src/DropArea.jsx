@@ -1,9 +1,8 @@
-import React, { useRef, useState, useCallback } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useCallback } from "react";
+import PropTypes from "prop-types";
 
 const DropArea = (props) => {
-  const droparea = useRef({})
-  const [hovered, setHovered] = useState(false)
+  const [hovered, setHovered] = useState(false);
 
   const {
     checkSnap,
@@ -12,102 +11,103 @@ const DropArea = (props) => {
     className,
     style,
     children,
-    accept
-  } = props
+    accept,
+  } = props;
 
   const onDragOver = useCallback(
     (e) => {
-      const dragging = document.getElementById('dragging')
+      const dragging = document.getElementById("dragging");
 
       if (!dragging) {
-        return
+        return;
       }
 
       const accepted = !Object.entries(accept).some(([key, value]) => {
-        if (key.startsWith('data-')) {
-          return dragging.getAttribute(key) !== value
+        if (key.startsWith("data-")) {
+          return dragging.getAttribute(key) !== value;
         }
-      })
+      });
 
       if (accepted) {
-        setHovered(true)
-        e.preventDefault()
+        setHovered(true);
+        e.preventDefault();
 
         if (
           checkSnap &&
           dragging &&
-          !dragging.hasAttribute('data-snap') &&
+          !dragging.hasAttribute("data-snap") &&
           checkSnap(
             index,
-            parseInt(dragging.getAttribute('data-height')),
+            parseInt(dragging.getAttribute("data-height")),
             hovered
           )
         ) {
-          const { left, top } = droparea.current.getBoundingClientRect()
+          const { left, top } = e.target.getBoundingClientRect();
 
           dragging.setAttribute(
-            'data-snap',
+            "data-snap",
             `${
               left +
               window.scrollX +
-              parseInt(getComputedStyle(droparea.current).paddingLeft)
+              parseInt(getComputedStyle(e.target).paddingLeft)
             },${
               top +
               window.scrollY +
-              parseInt(getComputedStyle(droparea.current).paddingTop)
+              parseInt(getComputedStyle(e.target).paddingTop)
             }`
-          )
+          );
         }
 
-        e.dataTransfer.dropEffect = 'all'
-        return true
+        e.dataTransfer.dropEffect = "all";
+        return true;
       }
 
-      e.dataTransfer.dropEffect = 'none'
-      e.preventDefault()
-      return false
+      e.dataTransfer.dropEffect = "none";
+      e.preventDefault();
+      return false;
     },
     [accept, hovered]
-  )
+  );
 
   const onDragLeave = useCallback(() => {
     if (hovered) {
-      setHovered(false)
-      const dragging = document.getElementById('dragging')
-      if (dragging) dragging.removeAttribute('data-snap')
+      setHovered(false);
+      const dragging = document.getElementById("dragging");
+      if (dragging) dragging.removeAttribute("data-snap");
     }
-  }, [hovered])
+  }, [hovered]);
 
   const onDrop = useCallback(
     (e) => {
       if (hovered) {
-        setHovered(false)
-        const data = JSON.parse(e.dataTransfer.getData('application/json'))
+        setHovered(false);
+        const data = JSON.parse(e.dataTransfer.getData("application/json"));
 
         const accepted = !Object.entries(accept).some(([key, value]) => {
-          if (!key.startsWith('data-')) {
-            return data[key] !== value
+          if (!key.startsWith("data-")) {
+            return data[key] !== value;
           }
-        })
+        });
 
         if (accepted) {
+          const { index: originalIndex } = data;
           setData({
+            ...data,
             index,
-            ...data
-          })
+            originalIndex,
+          });
         }
 
-        return accepted
+        return accepted;
       }
-      return false
+      return false;
     },
     [hovered]
-  )
+  );
 
   return (
     <div
-      ref={droparea}
-      className={`${className}${hovered ? ' hovered' : ''}`}
+      className={`${className}${hovered ? " hovered" : ""}`}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
@@ -115,8 +115,8 @@ const DropArea = (props) => {
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
 DropArea.propTypes = {
   className: PropTypes.string,
@@ -128,11 +128,11 @@ DropArea.propTypes = {
   style: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   ),
-  accept: PropTypes.object
-}
+  accept: PropTypes.object,
+};
 
 DropArea.defaultProps = {
-  accept: {}
-}
+  accept: {},
+};
 
-export default DropArea
+export default DropArea;
