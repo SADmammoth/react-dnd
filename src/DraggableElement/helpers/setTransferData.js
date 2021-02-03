@@ -1,6 +1,3 @@
-export default function setTransferData(data, dropEffect, e) {
-  e.dataTransfer.setData(
-    "application/json",
-    JSON.stringify({ data, dropEffect })
-  );
+export default function setTransferData(e, data) {
+  e.dataTransfer.setData("application/json", JSON.stringify(data));
 }
