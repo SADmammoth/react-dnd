@@ -33,14 +33,16 @@ export default function draggableElementReducer(state, { type, payload }) {
   }
 }
 
-function startDrag(state) {
+function startDrag(state, { x, y }) {
   return {
     prev: {
-      x: null,
-      y: null,
+      x,
+      y,
     },
     style: {
       position: "absolute",
+      left: x,
+      top: y,
     },
     dragging: true,
   };
@@ -79,13 +81,14 @@ function setPosition(state, { x, y }) {
   const diffY = y - prevY;
 
   return {
+    ...state,
     prev: {
       x,
       y,
     },
     style: {
       position: "absolute",
-      left: left - diffX,
+      left: left + diffX,
       top: top + diffY,
     },
   };

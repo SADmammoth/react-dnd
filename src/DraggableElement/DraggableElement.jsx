@@ -1,5 +1,7 @@
 import React, { useEffect, useReducer, useRef, useCallback } from "react";
 
+import moveElementToCenterCursor from "./helpers/moveElementToCenterCursor";
+
 import getPosition from "./helpers/getPosition";
 import draggableElementReducer, {
   actionTypes,
@@ -16,9 +18,28 @@ function DraggableElement({
   children,
   style: propsStyle,
   data,
+  rootElement,
 }) {
   const dragged = useRef({});
-  const [state, dispatch] = useReducer(draggableElementReducer, init);
+  const [state, dispatch] = useReducer(draggableElementReducer, {});
+
+  const mouseMove = (e) => {
+    dispatch({
+      type: actionTypes.SET_POSITION,
+      payload: { x: e.clientX, y: e.clientY },
+    });
+  };
+
+  useEffect(() => {
+    if (state.dragging) rootElement.addEventListener("dragover", mouseMove);
+    return () => rootElement.removeEventListener("dragover", mouseMove);
+  }, [state.dragging]);
+
+  useEffect(() => {
+    if (state.dragging) {
+      dispatch(moveElementToCenterCursor(dragged.current));
+    }
+  }, [state.dragging]);
 
   const dragStart = (e) => {
     setDragImage(e);
@@ -26,27 +47,13 @@ function DraggableElement({
 
     dispatch({
       type: actionTypes.START_DRAG,
-    });
-  };
-  const dragEnd = () => {
-    dispatch({ type: actionTypes.END_DRAG });
-  };
-  const mouseMove = (e) => {
-    dispatch({
-      type: actionTypes.SET_POSITION,
-      payload: { x: -e.clientX, y: e.clientY },
+      payload: { x: e.clientX, y: e.clientY },
     });
   };
 
-  useEffect(() => {
-    if (state.dragging) {
-      document.getElementById("root").addEventListener("dragover", mouseMove);
-    } else {
-      document
-        .getElementById("root")
-        .removeEventListener("dragover", mouseMove);
-    }
-  }, [dragging]);
+  const dragEnd = () => {
+    dispatch({ type: actionTypes.END_DRAG });
+  };
 
   return (
     <div
