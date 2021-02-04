@@ -1,59 +1,81 @@
-import React, { useEffect, useReducer, useRef, useCallback } from "react";
-
+import React, { useEffect, useReducer, useRef, useMemo } from "react";
+import PropTypes from "prop-types";
+import snapToDropArea from "./helpers/snapToDropArea";
 import moveElementToCenterCursor from "./helpers/moveElementToCenterCursor";
-
-import getPosition from "./helpers/getPosition";
 import draggableElementReducer, {
   actionTypes,
   init,
 } from "./helpers/draggableElementReducer";
 import setDragImage from "./helpers/setDragImage";
 import setTransferData from "./helpers/setTransferData";
+import _ from "lodash";
 
 function DraggableElement({
   className,
   height,
-  attributes,
   avatar,
   children,
   style: propsStyle,
   data,
   rootElement,
+  onDragStart,
+  onReject,
+  onDragEnd,
+  dropEffect,
 }) {
   const dragged = useRef({});
-  const [state, dispatch] = useReducer(draggableElementReducer, {});
+  const [state, dispatch] = useReducer(draggableElementReducer, init);
 
   const mouseMove = (e) => {
     dispatch({
-      type: actionTypes.SET_POSITION,
+      type: actionTypes.MOVE,
       payload: { x: e.clientX, y: e.clientY },
     });
+    dispatch(snapToDropArea(dragged.current));
   };
-
-  useEffect(() => {
-    if (state.dragging) rootElement.addEventListener("dragover", mouseMove);
-    return () => rootElement.removeEventListener("dragover", mouseMove);
-  }, [state.dragging]);
-
-  useEffect(() => {
-    if (state.dragging) {
-      dispatch(moveElementToCenterCursor(dragged.current));
-    }
-  }, [state.dragging]);
 
   const dragStart = (e) => {
     setDragImage(e);
-    setTransferData(e, data);
+    setTransferData(e, { ...data, height, dropEffect });
 
     dispatch({
       type: actionTypes.START_DRAG,
       payload: { x: e.clientX, y: e.clientY },
     });
+
+    onDragStart(data, height);
   };
 
-  const dragEnd = () => {
+  const dragEnd = (e) => {
     dispatch({ type: actionTypes.END_DRAG });
+
+    if (e.dataTransfer.dropEffect === "none") {
+      onReject(data, height);
+    } else {
+      onDragEnd(data, height);
+    }
   };
+
+  useEffect(() => {
+    if (state.dragging) rootElement.addEventListener("dragover", mouseMove);
+    return () => {
+      rootElement.removeEventListener("dragover", mouseMove);
+    };
+  }, [state.dragging]);
+
+  useEffect(() => {
+    if (state.dragging) dispatch(moveElementToCenterCursor(dragged.current));
+  }, [state.dragging]);
+
+  const attributes = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(data).filter(([dataKey, dataValue]) =>
+          dataKey.startsWith("data-")
+        )
+      ),
+    [data]
+  );
 
   return (
     <div
@@ -61,7 +83,7 @@ function DraggableElement({
       id={state.dragging ? "dragging" : ""}
       className={`draggable ${className || ""}`}
       draggable="true"
-      style={{ ...propsStyle, ...state.style }}
+      style={_.merge({}, propsStyle, state.style)}
       data-height={height}
       onDragStart={dragStart}
       onDragEnd={dragEnd}
@@ -72,6 +94,27 @@ function DraggableElement({
   );
 }
 
-DraggableElement.propTypes = {};
+DraggableElement.propTypes = {
+  data: PropTypes.object,
+  dropEffect: PropTypes.string,
+  onDragStart: PropTypes.func,
+  onDragEnd: PropTypes.func,
+  onReject: PropTypes.func,
+  style: PropTypes.objectOf(PropTypes.string),
+  className: PropTypes.string,
+  avatar: PropTypes.element,
+  height: PropTypes.number,
+  rootElement: PropTypes.object,
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+};
+
+DraggableElement.defaultProps = {
+  onReject: () => {},
+  onDragStart: () => {},
+  onDragEnd: () => {},
+  style: {},
+  height: 1,
+  rootElement: document.getElementById("root"),
+};
 
 export default DraggableElement;
