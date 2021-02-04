@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 
-const DropArea = props => {
+const DropArea = (props) => {
   const [hovered, setHovered] = useState(false);
 
   const {
@@ -11,11 +11,21 @@ const DropArea = props => {
     className,
     style,
     children,
-    accept
+    accept,
+
+    onHovered,
+    onSnapped,
+    onUnhovered,
+    onDropped,
   } = props;
 
+  const [styleState, setStyle] = useState(style);
+
+  const mergeStyle = (newStyle) =>
+    setStyle((styleState) => _.merge(styleState, newStyle));
+
   const onDragOver = useCallback(
-    e => {
+    (e) => {
       const dragging = document.getElementById("dragging");
 
       if (!dragging) {
@@ -27,6 +37,8 @@ const DropArea = props => {
           return dragging.getAttribute(key) !== value;
         }
       });
+
+      onHovered(dragging, index, accepted, mergeStyle);
 
       if (accepted) {
         setHovered(true);
@@ -43,15 +55,18 @@ const DropArea = props => {
           )
         ) {
           const { left, top } = e.target.getBoundingClientRect();
+          const snapLeft =
+            left +
+            window.scrollX +
+            parseInt(getComputedStyle(e.target).paddingLeft);
+          const snapTop =
+            top +
+            window.scrollY +
+            parseInt(getComputedStyle(e.target).paddingTop);
 
-          dragging.setAttribute(
-            "data-snap",
-            `${left +
-              window.scrollX +
-              parseInt(getComputedStyle(e.target).paddingLeft)},${top +
-              window.scrollY +
-              parseInt(getComputedStyle(e.target).paddingTop)}`
-          );
+          onSnapped(dragging, left, top, mergeStyle);
+
+          dragging.setAttribute("data-snap", `${snapLeft},${snapTop}`);
         }
 
         e.dataTransfer.dropEffect = "all";
@@ -66,15 +81,18 @@ const DropArea = props => {
   );
 
   const onDragLeave = useCallback(() => {
+    const dragging = document.getElementById("dragging");
+
+    onUnhovered(dragging, index, hovered, mergeStyle);
+
     if (hovered) {
       setHovered(false);
-      const dragging = document.getElementById("dragging");
       if (dragging) dragging.removeAttribute("data-snap");
     }
   }, [hovered]);
 
   const onDrop = useCallback(
-    e => {
+    (e) => {
       if (hovered) {
         setHovered(false);
         const data = JSON.parse(e.dataTransfer.getData("application/json"));
@@ -85,12 +103,14 @@ const DropArea = props => {
           }
         });
 
+        onDropped(data, index, accepted, mergeStyle);
+
         if (accepted) {
           const { index: originalIndex } = data;
           setData({
             ...data,
             index,
-            originalIndex
+            originalIndex,
           });
         }
 
@@ -107,7 +127,7 @@ const DropArea = props => {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
-      style={style}
+      style={styleState}
     >
       {children}
     </div>
@@ -124,11 +144,20 @@ DropArea.propTypes = {
   style: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   ),
-  accept: PropTypes.object
+  accept: PropTypes.object,
+
+  onSnapped: PropTypes.func,
+  onHovered: PropTypes.func,
+  onUnhovered: PropTypes.func,
+  onDropped: PropTypes.func,
 };
 
 DropArea.defaultProps = {
-  accept: {}
+  accept: {},
+  onSnapped: () => {},
+  onHovered: () => {},
+  onUnhovered: () => {},
+  onDropped: () => {},
 };
 
 export default DropArea;

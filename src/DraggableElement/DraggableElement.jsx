@@ -58,9 +58,7 @@ function DraggableElement({
 
   useEffect(() => {
     if (state.dragging) rootElement.addEventListener("dragover", mouseMove);
-    return () => {
-      rootElement.removeEventListener("dragover", mouseMove);
-    };
+    return () => rootElement.removeEventListener("dragover", mouseMove);
   }, [state.dragging]);
 
   useEffect(() => {
@@ -83,7 +81,7 @@ function DraggableElement({
       id={state.dragging ? "dragging" : ""}
       className={`draggable ${className || ""}`}
       draggable="true"
-      style={_.merge({}, propsStyle, state.style)}
+      style={{ ...propsStyle, ...state.style }}
       data-height={height}
       onDragStart={dragStart}
       onDragEnd={dragEnd}

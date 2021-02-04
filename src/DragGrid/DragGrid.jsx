@@ -16,6 +16,12 @@ function DragGrid({
   rows,
   createAvatar,
   rootElement,
+
+  onSnapped,
+  onHovered,
+  onUnhovered,
+  onDropped,
+
   ...props
 }) {
   const [grid, setGrid] = useState(map.flat());
@@ -34,11 +40,17 @@ function DragGrid({
           avatar={avatar}
           dropEffect="reassign"
           onDragStart={({ index }, height) => {
-            setGrid(grid => {
-              const newGrid = mapHeight(index, height, columns, grid, item => ({
-                ...item,
-                type: elementsTypes.dropArea
-              }));
+            setGrid((grid) => {
+              const newGrid = mapHeight(
+                index,
+                height,
+                columns,
+                grid,
+                (item) => ({
+                  ...item,
+                  type: elementsTypes.dropArea,
+                })
+              );
 
               const { style, ...rest } = newGrid[toLinearIndex(index, columns)];
 
@@ -47,15 +59,15 @@ function DragGrid({
             });
           }}
           onReject={({ index }, height) => {
-            setGrid(grid => {
+            setGrid((grid) => {
               const newGrid = mapHeight(
                 index,
                 height,
                 columns,
                 grid,
-                item => ({
+                (item) => ({
                   ...item,
-                  type: elementsTypes.hidden
+                  type: elementsTypes.hidden,
                 }),
                 false
               );
@@ -64,8 +76,8 @@ function DragGrid({
                 ...newGrid[toLinearIndex(index, columns)],
                 style: {
                   gridRow: data.index.x + 1 + " / span 2",
-                  gridColumn: data.index.y + 1
-                }
+                  gridColumn: data.index.y + 1,
+                },
               };
 
               return newGrid;
@@ -77,8 +89,8 @@ function DragGrid({
       ),
       style: {
         gridRow: data.index.x + 1 + " / span 2",
-        gridColumn: data.index.y + 1
-      }
+        gridColumn: data.index.y + 1,
+      },
     };
   };
   return (
@@ -90,11 +102,9 @@ function DragGrid({
       indexKey={indexKey}
       createAvatar={onCreateAvatar}
       onDataUpdate={(data, array) => {
-        console.log(data);
         setGrid(array);
       }}
       reassignAvatar={(body, _, index, height) => {
-        console.log(index);
         const newBody = [...body];
         const linearIndex = toLinearIndex(index, columns);
         const { originalIndex, ...data } = newBody[
@@ -103,15 +113,19 @@ function DragGrid({
 
         newBody.splice(linearIndex, 1, {
           ...newBody[linearIndex],
-          ...onCreateAvatar({ ...data, index }, height)
+          ...onCreateAvatar({ ...data, index }, height),
         });
 
         return newBody;
       }}
       style={{
         display: "grid",
-        grid: `repeat(${columns}, 1fr) / repeat(${rows}, 1fr)`
+        grid: `repeat(${columns}, 1fr) / repeat(${rows}, 1fr)`,
       }}
+      onSnapped={onSnapped}
+      onHovered={onHovered}
+      onUnhovered={onUnhovered}
+      onDropped={onDropped}
     />
   );
 }
@@ -128,18 +142,23 @@ DragGrid.propTypes = {
           className: PropTypes.string,
           index: PropTypes.shape({
             x: PropTypes.number,
-            y: PropTypes.number
+            y: PropTypes.number,
           }),
           key: PropTypes.string.isRequired,
-          avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
-        })
+          avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+        }),
       ])
     )
   ).isRequired,
   className: PropTypes.string,
   hiddenClass: PropTypes.string,
   snapToGrid: PropTypes.bool,
-  accept: PropTypes.object
+  accept: PropTypes.object,
+
+  onSnapped: PropTypes.func,
+  onHovered: PropTypes.func,
+  onUnhovered: PropTypes.func,
+  onDropped: PropTypes.func,
 };
 
 export default DragGrid;

@@ -8,9 +8,13 @@ export default function drawBody(
   setData,
   checkSnap,
   hiddenClass,
-  accept
+  accept,
+  onSnapped,
+  onHovered,
+  onUnhovered,
+  onDropped
 ) {
-  return body.map(child => {
+  return body.map((child) => {
     if (!child) {
       return child;
     }
@@ -27,12 +31,16 @@ export default function drawBody(
           key={key}
           index={index}
           className={classNames(className, {
-            [hiddenClass]: type === elementsTypes.hidden
+            [hiddenClass]: type === elementsTypes.hidden,
           })}
           setData={setData}
           checkSnap={checkSnap}
           accept={accept}
           style={style}
+          onSnapped={onSnapped}
+          onHovered={onHovered}
+          onUnhovered={onUnhovered}
+          onDropped={onDropped}
         >
           {child.avatar}
         </DropArea>
