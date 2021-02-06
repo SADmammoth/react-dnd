@@ -13,10 +13,12 @@ function StatelessDraggableList({
   onDropped,
   dropAreaStyle,
 }) {
+  let currentIndex = 0;
+
   return [
     createDropArea(
       id,
-      0,
+      currentIndex,
       onOrderChange,
       accept,
       onSnapped,
@@ -30,11 +32,12 @@ function StatelessDraggableList({
         if (item.props.id === dragging) {
           return item;
         } else {
+          currentIndex++;
           return [
             item,
             createDropArea(
               id,
-              i,
+              currentIndex,
               onOrderChange,
               accept,
               onSnapped,

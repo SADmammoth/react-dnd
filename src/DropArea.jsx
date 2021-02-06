@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 
 const DropArea = (props) => {
   const [hovered, setHovered] = useState(false);
@@ -22,7 +23,7 @@ const DropArea = (props) => {
   const [styleState, setStyle] = useState(style);
 
   const mergeStyle = (newStyle) =>
-    setStyle((styleState) => _.merge(styleState, newStyle));
+    setStyle((styleState) => _.merge({ ...styleState }, { ...newStyle }));
 
   const onDragOver = useCallback(
     (e) => {

@@ -15,13 +15,11 @@
 
 .list-droparea.hovered {
   height: 100px;
+  transition: all 100ms ease-in;
 }
 
 .list-droparea {
-  margin: -25px 0;
-  height: 50px;
   margin-left: -10px;
-  padding-top: 25px;
   padding-left: 10px;
   box-sizing: border-box;
 }

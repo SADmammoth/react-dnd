@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   DragGrid,
@@ -67,6 +67,8 @@ const App = () => {
         }}
         indexKey="myIndex"
         accept={{ secret: "code2", "data-code": "openCode2" }}
+        dropAreaHeight="50px"
+        gap="10px"
       />
     </>
   );
