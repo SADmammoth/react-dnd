@@ -11,11 +11,11 @@
 .avatar {
   border: 2px green solid;
   background-color: white;
+  transition: all 50ms ease-in;
 }
 
 .list-droparea.hovered {
-  height: 100px;
-  transition: all 100ms ease-in;
+  transition: all 200ms ease-in;
 }
 
 .list-droparea {

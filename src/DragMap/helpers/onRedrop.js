@@ -1,4 +1,4 @@
-import toLinearIndex from "./toLinearIndex";
+import toLinearIndex from "../../helpers/toLinearIndex";
 
 import elementsTypes from "../../elementsTypes";
 
@@ -11,18 +11,20 @@ export default function onRedrop(
   onReassign
 ) {
   const newBody = [...array];
-  const { avatar, ...bodyItem } = newBody[
-    toLinearIndex(originalIndex, columns)
-  ];
+  const originalInd = toLinearIndex(originalIndex, columns);
 
-  newBody.splice(toLinearIndex(originalIndex, columns), 1, {
+  const { avatar, ...bodyItem } = newBody[originalInd];
+
+  newBody.splice(originalInd, 1, {
     ...bodyItem,
-    type: elementsTypes.dropArea
+    type: elementsTypes.dropArea,
   });
-  newBody.splice(toLinearIndex(index, columns), 1, {
-    ...newBody[toLinearIndex(index, columns)],
+
+  const ind = toLinearIndex(index, columns);
+  newBody.splice(ind, 1, {
+    ...newBody[ind],
     type: elementsTypes.avatar,
-    avatar
+    avatar,
   });
 
   return onReassign(newBody, originalIndex, index, height);

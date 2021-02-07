@@ -15,9 +15,8 @@ function DraggableList({
   onHovered,
   onUnhovered,
   onDropped,
-
   orientation,
-  dropAreaHeight,
+  dropAreaSize,
   dropAreaStyle,
   gap,
 }) {
@@ -25,46 +24,28 @@ function DraggableList({
 
   const reorderItems = useCallback(
     ({ [indexKey]: sourceId, index: destinationIndex }) => {
-      console.log(sourceId, destinationIndex);
       onOrderChange(reorderList(sourceId, destinationIndex));
     },
     [items]
   );
 
-  const [hoveredDropAreaStyle, setHoveredDropAreaStyle] = useState({});
-
-  const getDefaultDropAreaStyle = () => {
-    return {
-      marginTop: `calc(-1 * ${dropAreaHeight} / 2 - ${gap})`,
-      marginBottom: `calc(-1 * ${dropAreaHeight} / 2))`,
-      height: 0,
-      paddingTop: `calc(${dropAreaHeight} / 2 + (${gap} * 2))`,
-    };
-  };
-
-  const onHoveredHandler = (dragging, index, accepted, mergeStyle) => {
+  const handlerWrapper = (handlerFromProps, isHovered) => (
+    dragging,
+    index,
+    accepted,
+    mergeStyle
+  ) => {
     if (accepted) {
-      mergeStyle(calcDropAreaStyle(dragging, dropAreaHeight, gap, orientation));
+      mergeStyle(
+        calcDropAreaStyle(isHovered, dropAreaSize, gap, orientation, dragging)
+      );
 
-      onHovered(dragging, index, accepted, mergeStyle);
+      handlerFromProps(dragging, index, accepted, mergeStyle);
     }
   };
 
-  const onUnhoveredHandler = (dragging, index, accepted, mergeStyle) => {
-    if (accepted) {
-      mergeStyle(getDefaultDropAreaStyle());
-
-      onUnhovered(dragging, index, accepted, mergeStyle);
-    }
-  };
-
-  const onDroppedHandler = (dragging, index, accepted, mergeStyle) => {
-    if (accepted) {
-      mergeStyle(getDefaultDropAreaStyle());
-
-      onDropped(dragging, index, accepted, mergeStyle);
-    }
-  };
+  const getDefaultDropAreaStyles = () =>
+    calcDropAreaStyle(false, dropAreaSize, gap, orientation, dragging);
 
   return (
     <StatelessDraggableList
@@ -74,12 +55,12 @@ function DraggableList({
       dragging={dragging}
       accept={accept}
       onSnapped={onSnapped}
-      onHovered={onHoveredHandler}
-      onUnhovered={onUnhoveredHandler}
-      onDropped={onDroppedHandler}
+      onHovered={handlerWrapper(onHovered, true)}
+      onUnhovered={handlerWrapper(onUnhovered, false)}
+      onDropped={handlerWrapper(onDropped, false)}
       dropAreaStyle={{
         ...dropAreaStyle,
-        ...getDefaultDropAreaStyle(),
+        ...getDefaultDropAreaStyles(),
       }}
     />
   );
@@ -93,13 +74,13 @@ DraggableList.propTypes = {
   indexKey: PropTypes.string.isRequired,
   accept: PropTypes.object,
   dropAreaStyle: PropTypes.object,
-
   onSnapped: PropTypes.func,
   onHovered: PropTypes.func,
   onUnhovered: PropTypes.func,
   onDropped: PropTypes.func,
   orientation: PropTypes.oneOf(["vertical", "horizontal"]),
-  dropAreaHeight: PropTypes.string,
+  dropAreaSize: PropTypes.string,
+  gap: PropTypes.string,
 };
 
 DraggableList.defaultProps = {
@@ -108,6 +89,7 @@ DraggableList.defaultProps = {
   onHovered: () => {},
   onUnhovered: () => {},
   onDropped: () => {},
+  orientation: "vertical",
 };
 
 export default DraggableList;

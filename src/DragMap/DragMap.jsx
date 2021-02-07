@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
+
+import elementsTypes from "../elementsTypes";
 import onDrop from "./helpers/onDrop";
 import drawBody from "./drawBody";
 import checkSnap from "./helpers/checkSnap";
@@ -18,7 +20,6 @@ const DragMap = (props) => {
     indexKey,
     className,
     style,
-
     onSnapped,
     onHovered,
     onUnhovered,
@@ -26,8 +27,8 @@ const DragMap = (props) => {
   } = props;
 
   useEffect(() => {
-    setBody(map.flat());
-  }, [JSON.stringify(map)]);
+    setBody(map);
+  }, [map]);
 
   const setData = useCallback(
     (data) =>
@@ -41,13 +42,13 @@ const DragMap = (props) => {
         createAvatar,
         indexKey
       ),
-    [JSON.stringify(body), setBody]
+    [body, setBody]
   );
 
   const checkSnapping = useCallback(
     (index, height, hovered) =>
       checkSnap(index, height, body, columns, hovered),
-    [JSON.stringify(body), columns]
+    [body, columns]
   );
 
   return (
@@ -72,21 +73,20 @@ DragMap.propTypes = {
   columns: PropTypes.number.isRequired,
   rows: PropTypes.number.isRequired,
   map: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-        PropTypes.shape({
-          type: PropTypes.string.isRequired,
-          className: PropTypes.string,
-          index: PropTypes.shape({
-            x: PropTypes.number,
-            y: PropTypes.number,
-          }),
-          key: PropTypes.string.isRequired,
-          avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    PropTypes.oneOfType([
+      PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+      PropTypes.shape({
+        type: PropTypes.oneOf(Object.values(elementsTypes)),
+        className: PropTypes.string,
+        index: PropTypes.shape({
+          x: PropTypes.number,
+          y: PropTypes.number,
         }),
-      ])
-    )
+        key: PropTypes.string.isRequired,
+        avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+        style: PropTypes.object,
+      }),
+    ])
   ).isRequired,
   reassignAvatar: PropTypes.func.isRequired,
   onDataUpdate: PropTypes.func.isRequired,
@@ -96,7 +96,6 @@ DragMap.propTypes = {
   snapToGrid: PropTypes.bool,
   accept: PropTypes.object,
   indexKey: PropTypes.string,
-
   onSnapped: PropTypes.func,
   onHovered: PropTypes.func,
   onUnhovered: PropTypes.func,
@@ -104,6 +103,12 @@ DragMap.propTypes = {
 };
 
 DragMap.defaultProps = {
+  snapToGrid: false,
+  onSnapped: () => {},
+  onHovered: () => {},
+  onUnhovered: () => {},
+  onDropped: () => {},
+  indexKey: "id",
   snapToGrid: false,
 };
 

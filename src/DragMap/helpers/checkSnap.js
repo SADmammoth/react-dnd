@@ -1,5 +1,4 @@
-import toLinearIndex from "./toLinearIndex";
-import elementsTypes from "../../elementsTypes";
+import mapHeight from "./mapHeight";
 
 export default function checkSnap(
   index,
@@ -12,15 +11,6 @@ export default function checkSnap(
   if (!useHeight) {
     return hovered;
   }
-  let indBuff;
-  let curr;
-  for (let i = index.x; i < index.x + height; i++) {
-    indBuff = toLinearIndex({ x: i, y: index.y }, columns);
 
-    curr = body[indBuff];
-    if (!curr || curr.type !== elementsTypes.dropArea) {
-      return false;
-    }
-  }
-  return true;
+  return mapHeight(index, height, columns, body);
 }

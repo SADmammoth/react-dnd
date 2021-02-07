@@ -19,16 +19,16 @@ const App = () => {
       <DraggableElement
         id={index}
         key={index}
-        onReject={(data) => {
-          console.log(data, "onReject");
-        }}
         data={{ secret, "data-code": openCode, myIndex: index }}
-        onDragStart={(data) => {
-          console.log(data, "onDragStart");
-        }}
         avatar={createAvatar({ myIndex: index }, 2)}
         rootElement={document}
         height={2}
+        onDragStart={(data) => {
+          console.log(data, "onDragStart");
+        }}
+        onReject={(data) => {
+          console.log(data, "onReject");
+        }}
       >
         <div className="original" style={{ height: `calc(50px * ${2})` }}>
           User avatar {index}
@@ -43,18 +43,22 @@ const App = () => {
         rows={2}
         columns={2}
         createAvatar={createAvatar}
-        reassignAvatar={(data) => {
-          console.log(data, "reassignAvatar");
-        }}
-        onDataUpdate={(data) => {
-          console.log(data, "onDataUpdate");
-        }}
         map={cells}
         snapToGrid={true}
         rootElement={document}
         accept={{ secret: "code1", "data-code": "openCode1" }}
         indexKey="myIndex"
         hiddenClass={"hidden"}
+        reassignAvatar={(data) => {
+          console.log(data, "reassignAvatar");
+        }}
+        onDataUpdate={(data) => {
+          console.log(data, "onDataUpdate");
+        }}
+        onDropped={(...args) => console.log(...args, "onDropped")}
+        onHovered={(...args) => console.log(...args, "onHovered")}
+        onUnhovered={(...args) => console.log(...args, "onUnhovered")}
+        onSnapped={(...args) => console.log(...args, "onSnapped")}
       />
       {createDraggableElement(0, "code1", "openCode1")}
       <DraggableList
@@ -67,7 +71,7 @@ const App = () => {
         }}
         indexKey="myIndex"
         accept={{ secret: "code2", "data-code": "openCode2" }}
-        dropAreaHeight="50px"
+        dropAreaSize="50px"
         gap="10px"
       />
     </>

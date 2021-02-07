@@ -5,26 +5,18 @@ import ListDropArea from "./ListDropArea";
 export default function createDropArea(
   id,
   index,
-  onOrderChange,
-  accept,
-  onSnapped,
-  onHovered,
-  onUnhovered,
-  onDropped,
-  style
+  className,
+  style,
+  { ...props }
 ) {
   return (
     <ListDropArea
       key={id + index}
       id={id + index}
-      index={index}
-      onOrderChange={onOrderChange}
-      accept={accept}
-      onSnapped={onSnapped}
-      onHovered={onHovered}
-      onUnhovered={onUnhovered}
-      onDropped={onDropped}
+      className={className}
       style={style}
+      index={index}
+      {...props}
     />
   );
 }

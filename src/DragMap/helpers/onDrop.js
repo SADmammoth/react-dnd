@@ -1,4 +1,6 @@
-import toLinearIndex from "./toLinearIndex";
+import toLinearIndex from "../../helpers/toLinearIndex";
+
+import dropEffects from "../../dropEffects";
 import elementsTypes from "../../elementsTypes";
 import onRedrop from "./onRedrop";
 import mapHeight from "./mapHeight";
@@ -13,16 +15,15 @@ export default function onDrop(
   createAvatar,
   indexKey
 ) {
-  console.log(data, indexKey);
   const { height, index, originalIndex } = data;
-  let array = [...body];
 
-  array = mapHeight(index, height, columns, array, item => ({
+  let array = [...body];
+  array = mapHeight(index, height, columns, array, (item) => ({
     ...item,
-    type: elementsTypes.hidden
+    type: elementsTypes.hidden,
   }));
 
-  if (data.dropEffect === "reassign") {
+  if (data.dropEffect === dropEffects.reassign) {
     array = onRedrop(
       columns,
       originalIndex,
@@ -39,10 +40,8 @@ export default function onDrop(
   array[linearIndex] = {
     ...array[linearIndex],
     ...createAvatar(data, height),
-    type: elementsTypes.avatar
+    type: elementsTypes.avatar,
   };
-
-  console.log(array);
 
   setBody(array);
   onDataUpdate(data, array);

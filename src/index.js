@@ -1,7 +1,6 @@
 import DropArea from "./DropArea";
-
+import dropEffects from "./dropEffects";
 import StatelessDraggableList from "./DraggableList/StatelessDraggableList";
-
 import elementsTypes from "./elementsTypes";
 import DraggableElement from "./DraggableElement";
 import DragMap from "./DragMap";
@@ -15,5 +14,6 @@ export {
   StatelessDraggableList,
   DragMap,
   DragGrid,
-  elementsTypes
+  elementsTypes,
+  dropEffects,
 };

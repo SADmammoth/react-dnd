@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useRef, useMemo } from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import snapToDropArea from "./helpers/snapToDropArea";
 import moveElementToCenterCursor from "./helpers/moveElementToCenterCursor";
 import draggableElementReducer, {
@@ -9,6 +10,7 @@ import draggableElementReducer, {
 import setDragImage from "./helpers/setDragImage";
 import setTransferData from "./helpers/setTransferData";
 import _ from "lodash";
+import dropEffects from "../dropEffects";
 
 function DraggableElement({
   className,
@@ -49,7 +51,7 @@ function DraggableElement({
   const dragEnd = (e) => {
     dispatch({ type: actionTypes.END_DRAG });
 
-    if (e.dataTransfer.dropEffect === "none") {
+    if (e.dataTransfer.dropEffect === dropEffects.none) {
       onReject(data, height);
     } else {
       onDragEnd(data, height);
@@ -78,8 +80,8 @@ function DraggableElement({
   return (
     <div
       ref={dragged}
-      id={state.dragging ? "dragging" : ""}
-      className={`draggable ${className || ""}`}
+      id={classNames({ dragging: state.dragging })}
+      className={classNames("draggable", className)}
       draggable="true"
       style={{ ...propsStyle, ...state.style }}
       data-height={height}
@@ -113,6 +115,7 @@ DraggableElement.defaultProps = {
   style: {},
   height: 1,
   rootElement: document.getElementById("root"),
+  dropEffect: dropEffects.all,
 };
 
 export default DraggableElement;

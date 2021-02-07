@@ -50,7 +50,7 @@
   },
   "bit": {
     "env": {
-      "compiler": "bit.envs/compilers/react@1.0.21"
+      "compiler": "mplatform.envs/compilers/sass@0.0.5"
     },
     "componentsDefaultDirectory": "components/{name}",
     "packageManager": "npm"

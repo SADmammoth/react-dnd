@@ -1,4 +1,5 @@
-import toLinearIndex from "./toLinearIndex";
+import toLinearIndex from "../../helpers/toLinearIndex";
+import elementsTypes from "../../elementsTypes";
 
 export default function mapHeight(
   index,
@@ -19,14 +20,13 @@ export default function mapHeight(
 
     if (
       checkIsSpaceAvailable &&
-      !curr &&
-      curr.type !== elementsTypes.dropArea
+      (!curr || curr.type !== elementsTypes.dropArea)
     ) {
-      return;
+      return false;
     }
 
-    newArray[indBuff] = action(curr, indBuff, newArray);
+    if (action) newArray[indBuff] = action(curr, indBuff, newArray);
   }
 
-  return newArray;
+  return action ? newArray : true;
 }

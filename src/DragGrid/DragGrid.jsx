@@ -1,13 +1,9 @@
-import React, { useEffect, useState, useCallback } from "react";
-
-import mapHeight from "../DragMap/helpers/mapHeight";
-
-import elementsTypes from "../elementsTypes";
-
-import toLinearIndex from "../DragMap/helpers/toLinearIndex";
+import React, { useState } from "react";
 import DragMap from "../DragMap";
 import PropTypes from "prop-types";
-import DraggableElement from "../DraggableElement";
+import removeKeys from "../helpers/removeKeys";
+import onCreateAvatar from "./helpers/onCreateAvatar";
+import toLinearIndex from "../helpers/toLinearIndex";
 
 function DragGrid({
   map,
@@ -24,75 +20,40 @@ function DragGrid({
 
   ...props
 }) {
-  const [grid, setGrid] = useState(map.flat());
+  const [grid, setGrid] = useState(map);
 
-  const onCreateAvatar = (data, height) => {
-    const avatar = createAvatar(data, height);
+  const createAvatarHandler = onCreateAvatar(
+    columns,
+    rootElement,
+    createAvatar,
+    indexKey,
+    setGrid
+  );
 
-    return {
-      avatar: (
-        <DraggableElement
-          id={data[indexKey]}
-          key={data[indexKey]}
-          data={data}
-          height={height}
-          rootElement={rootElement}
-          avatar={avatar}
-          dropEffect="reassign"
-          onDragStart={({ index }, height) => {
-            setGrid((grid) => {
-              const newGrid = mapHeight(
-                index,
-                height,
-                columns,
-                grid,
-                (item) => ({
-                  ...item,
-                  type: elementsTypes.dropArea,
-                })
-              );
+  const reassignAvatar = (body, _, index, height) => {
+    const newBody = [...body];
+    const linearIndex = toLinearIndex(index, columns);
+    const data = removeKeys(newBody[linearIndex].avatar?.props?.data, [
+      "originalIndex",
+    ]);
 
-              const { style, ...rest } = newGrid[toLinearIndex(index, columns)];
+    newBody.splice(linearIndex, 1, {
+      ...newBody[linearIndex],
+      ...createAvatarHandler({ ...data, index }, height),
+    });
 
-              newGrid[toLinearIndex(index, columns)] = rest;
-              return newGrid;
-            });
-          }}
-          onReject={({ index }, height) => {
-            setGrid((grid) => {
-              const newGrid = mapHeight(
-                index,
-                height,
-                columns,
-                grid,
-                (item) => ({
-                  ...item,
-                  type: elementsTypes.hidden,
-                }),
-                false
-              );
-
-              newGrid[toLinearIndex(index, columns)] = {
-                ...newGrid[toLinearIndex(index, columns)],
-                style: {
-                  gridRow: data.index.x + 1 + " / span 2",
-                  gridColumn: data.index.y + 1,
-                },
-              };
-
-              return newGrid;
-            });
-          }}
-        >
-          {avatar}
-        </DraggableElement>
-      ),
-      style: {
-        gridRow: data.index.x + 1 + " / span 2",
-        gridColumn: data.index.y + 1,
-      },
-    };
+    return newBody;
   };
+
+  const style = {
+    display: "grid",
+    grid: `repeat(${columns}, 1fr) / repeat(${rows}, 1fr)`,
+  };
+
+  const onDataUpdate = (data, array) => {
+    setGrid(array);
+  };
+
   return (
     <DragMap
       {...props}
@@ -100,28 +61,10 @@ function DragGrid({
       columns={columns}
       rows={rows}
       indexKey={indexKey}
-      createAvatar={onCreateAvatar}
-      onDataUpdate={(data, array) => {
-        setGrid(array);
-      }}
-      reassignAvatar={(body, _, index, height) => {
-        const newBody = [...body];
-        const linearIndex = toLinearIndex(index, columns);
-        const { originalIndex, ...data } = newBody[
-          linearIndex
-        ].avatar.props.data;
-
-        newBody.splice(linearIndex, 1, {
-          ...newBody[linearIndex],
-          ...onCreateAvatar({ ...data, index }, height),
-        });
-
-        return newBody;
-      }}
-      style={{
-        display: "grid",
-        grid: `repeat(${columns}, 1fr) / repeat(${rows}, 1fr)`,
-      }}
+      createAvatar={createAvatarHandler}
+      onDataUpdate={onDataUpdate}
+      reassignAvatar={reassignAvatar}
+      style={style}
       onSnapped={onSnapped}
       onHovered={onHovered}
       onUnhovered={onUnhovered}
@@ -134,21 +77,19 @@ DragGrid.propTypes = {
   columns: PropTypes.number.isRequired,
   rows: PropTypes.number.isRequired,
   map: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-        PropTypes.shape({
-          type: PropTypes.string.isRequired,
-          className: PropTypes.string,
-          index: PropTypes.shape({
-            x: PropTypes.number,
-            y: PropTypes.number,
-          }),
-          key: PropTypes.string.isRequired,
-          avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    PropTypes.oneOfType([
+      PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+      PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        className: PropTypes.string,
+        index: PropTypes.shape({
+          x: PropTypes.number,
+          y: PropTypes.number,
         }),
-      ])
-    )
+        key: PropTypes.string.isRequired,
+        avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+      }),
+    ])
   ).isRequired,
   className: PropTypes.string,
   hiddenClass: PropTypes.string,

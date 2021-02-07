@@ -11,13 +11,11 @@ export default function useList(list) {
         ({ props: { id: candidateId } }) => candidateId === sourceId
       );
 
-      console.log(sourceId, sourceIndex, destinationIndex);
-
-      const newItems = [...items];
       if (sourceIndex < 0 || destinationIndex < 0) {
         return;
       }
 
+      const newItems = [...items];
       const newItem = newItems.splice(sourceIndex, 1)[0];
       newItems.splice(destinationIndex, 0, newItem);
 
