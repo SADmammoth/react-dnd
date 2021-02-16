@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import createDropArea from "./createDropArea";
+import createDropArea from "./createDropArea.js";
 
 function StatelessDraggableList({
   id,

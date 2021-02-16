@@ -1,3 +1,3 @@
-import StatelessDraggableList from "./StatelessDraggableList";
+import StatelessDraggableList from "./StatelessDraggableList.jsx";
 
 export default StatelessDraggableList;

@@ -1,10 +1,11 @@
 import React from "react";
 
+import DraggableElement from "../../DraggableElement";
+
 import toLinearIndex from "../../helpers/toLinearIndex";
 
 import elementsTypes from "../../elementsTypes";
 
-import DraggableElement from "../../DraggableElement/DraggableElement";
 import removeKeys from "../../helpers/removeKeys";
 
 import dropEffects from "../../dropEffects";

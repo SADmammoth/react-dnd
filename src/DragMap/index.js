@@ -1,3 +1,3 @@
-import DragMap from "./DragMap";
+import DragMap from "./DragMap.jsx";
 
 export default DragMap;

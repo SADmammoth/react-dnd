@@ -1,6 +1,6 @@
 import React from "react";
 
-import ListDropArea from "./ListDropArea";
+import ListDropArea from "./ListDropArea.jsx";
 
 export default function createDropArea(
   id,

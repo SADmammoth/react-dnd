@@ -1,3 +1,3 @@
-import DropArea from "./DropArea";
+import DropArea from "./DropArea.jsx";
 
 export default DropArea;

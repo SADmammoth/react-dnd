@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function draggingStateProxy(items, setDragging) {
-  return React.Children.map(items, item =>
+  return items.map(item =>
     React.cloneElement(item, {
       ...item.props,
       onDragStart: (...args) => {

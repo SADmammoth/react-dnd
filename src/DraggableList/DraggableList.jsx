@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import useList from "./useList";
 import PropTypes from "prop-types";
@@ -20,7 +20,7 @@ function DraggableList({
   dropAreaStyle,
   gap,
 }) {
-  const [items, dragging, reorderList] = useList(list);
+  const [items, setItems, dragging, reorderList] = useList(list);
 
   const reorderItems = useCallback(
     ({ [indexKey]: sourceId, index: destinationIndex }) => {
@@ -46,6 +46,10 @@ function DraggableList({
 
   const getDefaultDropAreaStyles = () =>
     calcDropAreaStyle(false, dropAreaSize, gap, orientation, dragging);
+
+  useEffect(() => {
+    setItems(list);
+  }, [list]);
 
   return (
     <StatelessDraggableList

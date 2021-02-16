@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import elementsTypes from "../elementsTypes";
 import onDrop from "./helpers/onDrop";
 import drawBody from "./drawBody";
-import checkSnap from "./helpers/checkSnap";
+import checkSnap from "./helpers/checkSnap.js";
 import PropTypes from "prop-types";
 
 const DragMap = (props) => {

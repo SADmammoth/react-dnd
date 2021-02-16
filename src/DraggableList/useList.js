@@ -28,5 +28,5 @@ export default function useList(list) {
     [items]
   );
 
-  return [items, dragging, reorderItems];
+  return [items, setItems, dragging, reorderItems];
 }

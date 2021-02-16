@@ -1,3 +1,3 @@
-import DragGrid from "./DragGrid";
+import DragGrid from "./DragGrid.jsx";
 
 export default DragGrid;

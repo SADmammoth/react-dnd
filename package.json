@@ -50,9 +50,9 @@
   },
   "bit": {
     "env": {
-      "compiler": "mplatform.envs/compilers/sass@0.0.5"
+      "compiler": "sadmammoth.components/bundlers/webpack-css-modules@4.0.5"
     },
     "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "npm"
+    "packageManager": "yarn"
   }
 }

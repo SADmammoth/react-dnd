@@ -7,6 +7,17 @@ import DragMap from "./DragMap";
 import DraggableList from "./DraggableList";
 import DragGrid from "./DragGrid";
 
+export default {
+  DropArea,
+  DraggableList,
+  DraggableElement,
+  StatelessDraggableList,
+  DragMap,
+  DragGrid,
+  elementsTypes,
+  dropEffects,
+};
+
 export {
   DropArea,
   DraggableList,

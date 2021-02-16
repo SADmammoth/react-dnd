@@ -33,9 +33,10 @@ function DragGrid({
   const reassignAvatar = (body, _, index, height) => {
     const newBody = [...body];
     const linearIndex = toLinearIndex(index, columns);
-    const data = removeKeys(newBody[linearIndex].avatar?.props?.data, [
-      "originalIndex",
-    ]);
+    const data = removeKeys(
+      newBody[linearIndex].avatar && newBody[linearIndex].avatar.props.data,
+      ["originalIndex"]
+    );
 
     newBody.splice(linearIndex, 1, {
       ...newBody[linearIndex],
