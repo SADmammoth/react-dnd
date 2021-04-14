@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import draggingStateProxy from "./draggingStateProxy";
 
-export default function useList(list, onNewItem) {
+export default function useList(list, onNewItem, onDroppedAway) {
   const [dragging, setDragging] = useState(null);
   const [items, setItems] = useState(draggingStateProxy(list, setDragging));
 
@@ -46,6 +46,15 @@ export default function useList(list, onNewItem) {
   const dropItem = (dropped) => {
     setDropped(dropped);
   };
+
+  useEffect(() => {
+    const index = items.findIndex((item) => item.props.id === dragging);
+    if (dragging && index < 0) {
+      onDroppedAway(dragging);
+      setDragging(null);
+      return;
+    }
+  }, [items]);
 
   return [items, updateItems, dragging, reorderItems, dropItem];
 }

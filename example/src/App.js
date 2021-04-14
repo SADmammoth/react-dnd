@@ -8,6 +8,8 @@ import {
 import cells from "./cells";
 
 const App = () => {
+  const [removed, setRemoved] = useState(null);
+
   const createAvatar = ({ myIndex }, height) => (
     <div className="avatar" style={{ height: `calc(50px * ${height})` }}>
       User avatar {myIndex}
@@ -43,13 +45,13 @@ const App = () => {
     setTimeout(() => setTasks([1, 2]), 500);
   }, []);
 
-  const [is0AtList, setIs0AtList] = useState(false);
+  const [added, setAdded] = useState(false);
   const item0 = createDraggableElement(0, "code1", "openCode1");
 
   useEffect(() => {
-    if (is0AtList !== false && is0AtList !== null) {
+    if (added !== false && added !== null) {
       const index = tasks.findIndex((i) => i === 0);
-      console.log(tasks, index);
+
       if (index >= 0) {
         setTasks((tasks) => [
           ...tasks.slice(0, index),
@@ -57,14 +59,21 @@ const App = () => {
         ]);
       }
 
-      setTasks((tasks) => [
-        ...tasks.slice(0, is0AtList),
-        0,
-        ...tasks.slice(is0AtList),
-      ]);
-      setIs0AtList(null);
+      setTasks((tasks) => [...tasks.slice(0, added), 0, ...tasks.slice(added)]);
+      setAdded(null);
     }
-  }, [is0AtList, item0, tasks]);
+  }, [added, item0, tasks]);
+
+  useEffect(() => {
+    if (removed) {
+      setTasks((tasks) => {
+        const index = tasks.findIndex((task) => task === removed);
+        return [...tasks.slice(0, index), ...tasks.slice(index + 1)];
+      });
+
+      setRemoved(null);
+    }
+  }, [removed]);
 
   return (
     <>
@@ -84,7 +93,10 @@ const App = () => {
         onDataUpdate={(data) => {
           console.log(data, "onDataUpdate");
         }}
-        onDropped={(...args) => console.log(...args, "onDropped")}
+        onDropped={(args) => {
+          console.log(args, "onDropped");
+          setRemove(args.myIndex);
+        }}
         onHovered={(...args) => console.log(...args, "onHovered")}
         onUnhovered={(...args) => console.log(...args, "onUnhovered")}
         onSnapped={(...args) => console.log(...args, "onSnapped")}
@@ -100,7 +112,11 @@ const App = () => {
         }}
         indexKey="myIndex"
         onNewItem={(data) => {
-          setIs0AtList(data.index.x);
+          console.log(data, "onNewItem");
+          setAdded(data.index.x);
+        }}
+        onDroppedAway={(data) => {
+          console.log(data, "onDroppedAway");
         }}
         // accept={{ secret: "code2", "data-code": "openCode2" }}
         dropAreaSize="50px"
