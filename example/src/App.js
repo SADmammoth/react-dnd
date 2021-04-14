@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   DragGrid,
@@ -37,6 +37,12 @@ const App = () => {
     );
   };
 
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => setTasks([1, 2]), 500);
+  }, []);
+
   return (
     <>
       <DragGrid
@@ -63,7 +69,7 @@ const App = () => {
       {createDraggableElement(0, "code1", "openCode1")}
       <DraggableList
         id="list"
-        list={[1, 2, 3].map((num) =>
+        list={tasks.map((num) =>
           createDraggableElement(num, "code2", "openCode2")
         )}
         onOrderChange={(data) => {

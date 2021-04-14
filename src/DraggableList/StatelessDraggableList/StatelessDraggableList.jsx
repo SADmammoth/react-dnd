@@ -21,7 +21,7 @@ function StatelessDraggableList({
     ),
     ...list.map((item) => {
       if (item.props.id === dragging) {
-        return item;
+        return [item];
       } else {
         currentIndex++;
         return [

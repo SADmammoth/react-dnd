@@ -28,5 +28,9 @@ export default function useList(list) {
     [items]
   );
 
-  return [items, setItems, dragging, reorderItems];
+  const updateItems = (newItems) => {
+    setItems(draggingStateProxy(newItems, setDragging));
+  };
+
+  return [items, updateItems, dragging, reorderItems];
 }
