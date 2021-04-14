@@ -10,7 +10,7 @@ export default function draggingStateProxy(items, setDragging) {
       },
       onDragEnd: (...args) => {
         setDragging(null);
-        item.props.onReject(...args);
+        item.props.onDragEnd(...args);
       },
       onReject: (...args) => {
         setDragging(null);

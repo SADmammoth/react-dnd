@@ -15,12 +15,16 @@ function DraggableList({
   onHovered,
   onUnhovered,
   onDropped,
+  onNewItem,
   orientation,
   dropAreaSize,
   dropAreaStyle,
   gap,
 }) {
-  const [items, setItems, dragging, reorderList] = useList(list);
+  const [items, setItems, dragging, reorderList, setDropped] = useList(
+    list,
+    onNewItem
+  );
 
   const reorderItems = useCallback(
     ({ [indexKey]: sourceId, index: destinationIndex }) => {
@@ -61,7 +65,10 @@ function DraggableList({
       onSnapped={onSnapped}
       onHovered={handlerWrapper(onHovered, true)}
       onUnhovered={handlerWrapper(onUnhovered, false)}
-      onDropped={handlerWrapper(onDropped, false)}
+      onDropped={(data) => {
+        setDropped(data);
+        handlerWrapper(onDropped, false)(data);
+      }}
       dropAreaStyle={{
         ...dropAreaStyle,
         ...getDefaultDropAreaStyles(),
@@ -82,6 +89,7 @@ DraggableList.propTypes = {
   onHovered: PropTypes.func,
   onUnhovered: PropTypes.func,
   onDropped: PropTypes.func,
+  onNewItem: PropTypes.func,
   orientation: PropTypes.oneOf(["vertical", "horizontal"]),
   dropAreaSize: PropTypes.string,
   gap: PropTypes.string,
@@ -93,6 +101,7 @@ DraggableList.defaultProps = {
   onHovered: () => {},
   onUnhovered: () => {},
   onDropped: () => {},
+  onNewItem: () => {},
   orientation: "vertical",
 };
 

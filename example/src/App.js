@@ -43,6 +43,29 @@ const App = () => {
     setTimeout(() => setTasks([1, 2]), 500);
   }, []);
 
+  const [is0AtList, setIs0AtList] = useState(false);
+  const item0 = createDraggableElement(0, "code1", "openCode1");
+
+  useEffect(() => {
+    if (is0AtList !== false && is0AtList !== null) {
+      const index = tasks.findIndex((i) => i === 0);
+      console.log(tasks, index);
+      if (index >= 0) {
+        setTasks((tasks) => [
+          ...tasks.slice(0, index),
+          ...tasks.slice(index + 1),
+        ]);
+      }
+
+      setTasks((tasks) => [
+        ...tasks.slice(0, is0AtList),
+        0,
+        ...tasks.slice(is0AtList),
+      ]);
+      setIs0AtList(null);
+    }
+  }, [is0AtList, item0, tasks]);
+
   return (
     <>
       <DragGrid
@@ -52,7 +75,7 @@ const App = () => {
         map={cells}
         snapToGrid={true}
         rootElement={document}
-        accept={{ secret: "code1", "data-code": "openCode1" }}
+        // accept={{ secret: "code1", "data-code": "openCode1" }}
         indexKey="myIndex"
         hiddenClass={"hidden"}
         reassignAvatar={(data) => {
@@ -66,7 +89,7 @@ const App = () => {
         onUnhovered={(...args) => console.log(...args, "onUnhovered")}
         onSnapped={(...args) => console.log(...args, "onSnapped")}
       />
-      {createDraggableElement(0, "code1", "openCode1")}
+      {is0AtList === false && item0}
       <DraggableList
         id="list"
         list={tasks.map((num) =>
@@ -76,7 +99,10 @@ const App = () => {
           console.log(data, "onOrderChange");
         }}
         indexKey="myIndex"
-        accept={{ secret: "code2", "data-code": "openCode2" }}
+        onNewItem={(data) => {
+          setIs0AtList(data.index.x);
+        }}
+        // accept={{ secret: "code2", "data-code": "openCode2" }}
         dropAreaSize="50px"
         gap="10px"
       />

@@ -29,7 +29,6 @@ function DraggableElement({
   const [state, dispatch] = useReducer(draggableElementReducer, init);
 
   const mouseMove = (e) => {
-    console.log(2);
     dispatch({
       type: actionTypes.MOVE,
       payload: { x: e.clientX, y: e.clientY },
@@ -50,7 +49,6 @@ function DraggableElement({
   };
 
   const dragEnd = (e) => {
-    console.log(1);
     dispatch({ type: actionTypes.END_DRAG });
 
     if (e.dataTransfer.dropEffect === dropEffects.none) {
