@@ -43,6 +43,15 @@ export default function useList(list, onNewItem, onDroppedAway) {
     }
   }, [dropped]);
 
+  const [prevDragging, setPrevDragging] = useState(null);
+
+  useEffect(() => {
+    if (prevDragging && !dragging && !dropped) {
+      onDroppedAway(prevDragging);
+    }
+    setPrevDragging(dragging);
+  }, [dragging]);
+
   const dropItem = (dropped) => {
     setDropped(dropped);
   };

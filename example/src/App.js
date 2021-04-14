@@ -95,13 +95,12 @@ const App = () => {
         }}
         onDropped={(args) => {
           console.log(args, "onDropped");
-          setRemove(args.myIndex);
         }}
         onHovered={(...args) => console.log(...args, "onHovered")}
         onUnhovered={(...args) => console.log(...args, "onUnhovered")}
         onSnapped={(...args) => console.log(...args, "onSnapped")}
       />
-      {is0AtList === false && item0}
+      {added === false && item0}
       <DraggableList
         id="list"
         list={tasks.map((num) =>
@@ -117,6 +116,7 @@ const App = () => {
         }}
         onDroppedAway={(data) => {
           console.log(data, "onDroppedAway");
+          setRemoved(data);
         }}
         // accept={{ secret: "code2", "data-code": "openCode2" }}
         dropAreaSize="50px"
