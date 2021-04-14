@@ -41,7 +41,7 @@ function startDrag(state, { x, y }) {
       y,
     },
     style: {
-      position: "absolute",
+      position: "fixed",
       left: x,
       top: y,
     },
@@ -53,7 +53,7 @@ function setLeftTop(state, { left, top }) {
   return {
     ...state,
     style: {
-      position: "absolute",
+      position: "fixed",
       pointerEvents: "none",
       left,
       top,
@@ -69,7 +69,7 @@ function setPosition(state, { left, top, x, y }) {
       y,
     },
     style: {
-      position: "absolute",
+      position: "fixed",
       pointerEvents: "none",
       left,
       top,
@@ -106,7 +106,7 @@ function move(state, { x, y }) {
     },
     style: {
       pointerEvents: "none",
-      position: "absolute",
+      position: "fixed",
       left: left + diffX,
       top: top + diffY,
     },
