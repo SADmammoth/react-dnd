@@ -1,8 +1,10 @@
 export default function callDropAreaDragStart() {
-  const dropareas = [...document.getElementsByClassName("drop-area")];
+  const dropareas = [
+    ...document.getElementsByClassName("drop-area-drag-start"),
+  ];
   dropareas.forEach((droparea) => {
     const event = document.createEvent("HTMLEvents");
     event.initEvent("dragstart", true, true);
-    droparea.dispatchEvent(event);
+    if (droparea.dispatchEvent) droparea.dispatchEvent(event);
   });
 }

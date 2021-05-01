@@ -75,16 +75,18 @@ const DropArea = (props) => {
   }, [index, accept]);
 
   const onAcceptedDragStartHandler = useCallback(() => {
-    if (!onAcceptedDragStart) return;
     const dragging = getDraggingElement();
     const accepted = checkIfAccepted(dragging, accept || {});
-
     onAcceptedDragStart(dragging, index, accepted, mergeStyle);
   });
 
   return (
     <div
-      className={classNames(className, { hovered: hovered }, "drop-area")}
+      className={classNames(
+        className,
+        { hovered: hovered },
+        "drop-area-drag-start"
+      )}
       onDragOver={onDragOver}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
@@ -112,6 +114,7 @@ DropArea.propTypes = {
   onHovered: PropTypes.func,
   onUnhovered: PropTypes.func,
   onDropped: PropTypes.func,
+  onAcceptedDragStart: PropTypes.func,
 };
 
 DropArea.defaultProps = {
@@ -120,6 +123,7 @@ DropArea.defaultProps = {
   onHovered: () => {},
   onUnhovered: () => {},
   onDropped: () => {},
+  onAcceptedDragStart: () => {},
 };
 
 export default DropArea;
