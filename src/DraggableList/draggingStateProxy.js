@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function draggingStateProxy(items, setDragging) {
+export default function draggingStateProxy(items, setDragging, onReject) {
   return items.map((item) =>
     React.cloneElement(item, {
       ...item.props,
@@ -13,6 +13,7 @@ export default function draggingStateProxy(items, setDragging) {
         item.props.onDragEnd(...args);
       },
       onReject: (...args) => {
+        onReject();
         setDragging(null);
         item.props.onReject(...args);
       },

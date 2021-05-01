@@ -3,7 +3,15 @@ import draggingStateProxy from "./draggingStateProxy";
 
 export default function useList(list, onNewItem, onDroppedAway) {
   const [dragging, setDragging] = useState(null);
-  const [items, setItems] = useState(draggingStateProxy(list, setDragging));
+  const [isRejected, setRejected] = useState(false);
+
+  const reject = () => {
+    setRejected(true);
+  };
+
+  const [items, setItems] = useState(
+    draggingStateProxy(list, setDragging, reject)
+  );
 
   const reorderItems = useCallback(
     (sourceId, destinationIndex) => {
@@ -32,7 +40,7 @@ export default function useList(list, onNewItem, onDroppedAway) {
   );
 
   const updateItems = (newItems) => {
-    setItems(draggingStateProxy(newItems, setDragging));
+    setItems(draggingStateProxy(newItems, setDragging, reject));
   };
 
   const [dropped, setDropped] = useState(null);
@@ -46,10 +54,11 @@ export default function useList(list, onNewItem, onDroppedAway) {
   const [prevDragging, setPrevDragging] = useState(null);
 
   useEffect(() => {
-    if (prevDragging && !dragging && !dropped) {
+    if (prevDragging && !dragging && !dropped && !isRejected) {
       onDroppedAway(prevDragging);
     }
     setPrevDragging(dragging);
+    setRejected(false);
   }, [dragging]);
 
   const dropItem = (dropped) => {
