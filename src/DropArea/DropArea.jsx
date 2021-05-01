@@ -29,6 +29,7 @@ const DropArea = (props) => {
     onUnhovered,
     onDropped,
     onAcceptedDragStart,
+    onAcceptedDragEnd,
   } = props;
 
   const [styleState, setStyle] = useState(style);
@@ -76,8 +77,14 @@ const DropArea = (props) => {
 
   const onAcceptedDragStartHandler = useCallback(() => {
     const dragging = getDraggingElement();
-    const accepted = checkIfAccepted(dragging, accept || {});
+    const accepted = checkIfAccepted(dragging, accept);
     onAcceptedDragStart(dragging, index, accepted, mergeStyle);
+  });
+
+  const onAcceptedDragEndHandler = useCallback(() => {
+    const dragging = getDraggingElement();
+    const accepted = checkIfAccepted(dragging, accept);
+    onAcceptedDragEnd(dragging, index, accepted, mergeStyle);
   });
 
   return (
@@ -85,13 +92,14 @@ const DropArea = (props) => {
       className={classNames(
         className,
         { hovered: hovered },
-        "drop-area-drag-start"
+        "drop-area-events"
       )}
       onDragOver={onDragOver}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
       onDragStart={onAcceptedDragStartHandler}
+      onDragEnd={onAcceptedDragEndHandler}
       style={styleState}
     >
       {children}
@@ -115,6 +123,7 @@ DropArea.propTypes = {
   onUnhovered: PropTypes.func,
   onDropped: PropTypes.func,
   onAcceptedDragStart: PropTypes.func,
+  onAcceptedDragEnd: PropTypes.func,
 };
 
 DropArea.defaultProps = {
@@ -124,6 +133,7 @@ DropArea.defaultProps = {
   onUnhovered: () => {},
   onDropped: () => {},
   onAcceptedDragStart: () => {},
+  onAcceptedDragEnd: () => {},
 };
 
 export default DropArea;

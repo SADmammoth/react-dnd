@@ -12,6 +12,7 @@ import setTransferData from "./helpers/setTransferData";
 import _ from "lodash";
 import dropEffects from "../dropEffects";
 import callDropAreaDragStart from "./helpers/callDropAreaDragStart";
+import callDropAreaDragEnd from "./helpers/callDropAreaDragEnd";
 
 function DraggableElement({
   className,
@@ -51,6 +52,8 @@ function DraggableElement({
 
   const dragEnd = (e) => {
     dispatch({ type: actionTypes.END_DRAG });
+
+    callDropAreaDragEnd();
 
     if (e.dataTransfer.dropEffect === dropEffects.none) {
       onReject(data, height);
