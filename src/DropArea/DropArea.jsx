@@ -28,6 +28,7 @@ const DropArea = (props) => {
     onSnapped,
     onUnhovered,
     onDropped,
+    onAcceptedDragStart,
   } = props;
 
   const [styleState, setStyle] = useState(style);
@@ -68,18 +69,27 @@ const DropArea = (props) => {
   );
 
   const onDragEnter = useCallback(() => {
-    const accepted = checkIfAccepted(accept);
     const dragging = getDraggingElement();
+    const accepted = checkIfAccepted(dragging, accept);
     onHovered(dragging, index, accepted, mergeStyle);
   }, [index, accept]);
 
+  const onAcceptedDragStartHandler = useCallback(() => {
+    if (!onAcceptedDragStart) return;
+    const dragging = getDraggingElement();
+    const accepted = checkIfAccepted(dragging, accept || {});
+
+    onAcceptedDragStart(dragging, index, accepted, mergeStyle);
+  });
+
   return (
     <div
-      className={classNames(className, { hovered: hovered })}
+      className={classNames(className, { hovered: hovered }, "drop-area")}
       onDragOver={onDragOver}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
+      onDragStart={onAcceptedDragStartHandler}
       style={styleState}
     >
       {children}

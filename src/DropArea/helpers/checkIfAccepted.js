@@ -1,4 +1,4 @@
-export default function checkIfAccepted(accept) {
+export default function checkIfAccepted(dragging, accept) {
   return !Object.entries(accept).some(([key, value]) => {
     if (key.startsWith("data-")) {
       return dragging.getAttribute(key) !== value;

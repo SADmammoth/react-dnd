@@ -11,6 +11,7 @@ import setDragImage from "./helpers/setDragImage";
 import setTransferData from "./helpers/setTransferData";
 import _ from "lodash";
 import dropEffects from "../dropEffects";
+import callDropAreaDragStart from "./helpers/callDropAreaDragStart";
 
 function DraggableElement({
   className,
@@ -64,7 +65,10 @@ function DraggableElement({
   }, [state.dragging]);
 
   useEffect(() => {
-    if (state.dragging) dispatch(moveElementToCenterCursor(dragged.current));
+    if (state.dragging) {
+      dispatch(moveElementToCenterCursor(dragged.current));
+      callDropAreaDragStart();
+    }
   }, [state.dragging]);
 
   const attributes = useMemo(
