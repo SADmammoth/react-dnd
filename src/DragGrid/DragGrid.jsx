@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DragMap from "../DragMap";
 import PropTypes from "prop-types";
 import removeKeys from "../helpers/removeKeys";

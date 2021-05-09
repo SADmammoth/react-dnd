@@ -75,13 +75,35 @@ const App = () => {
     }
   }, [removed]);
 
+  const [map, setMap] = useState([]);
+
+  useEffect(()=>{
+    async function func(){
+    let resolve;
+
+    setTimeout(()=>{
+      resolve()
+    }, 1000)
+
+    const prom = await new Promise((resolvePromise)=>{
+      resolve = ()=>resolvePromise(cells)
+    })
+
+      setMap(prom)
+    }
+
+    func()
+  })
+
   return (
     <>
       <DragGrid
         rows={2}
         columns={2}
         createAvatar={createAvatar}
-        map={cells}
+        map={
+          map
+        }
         snapToGrid={true}
         rootElement={document}
         // accept={{ secret: "code1", "data-code": "openCode1" }}
