@@ -22,6 +22,10 @@ function DragGrid({
 }) {
   const [grid, setGrid] = useState(map);
 
+  useEffect(() => {
+    setGrid(map);
+  }, [map]);
+
   const createAvatarHandler = onCreateAvatar(
     columns,
     rootElement,
