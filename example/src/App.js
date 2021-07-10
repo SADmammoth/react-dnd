@@ -4,6 +4,7 @@ import {
   DropColumns,
   DraggableElement,
   DraggableList,
+  DropCanvas,
 } from '@sadmammoth/react-dnd';
 import cells from './cells';
 
@@ -142,6 +143,7 @@ const App = () => {
         dropAreaSize="50px"
         gap="10px"
       />
+      <DropCanvas />
     </>
   );
 };

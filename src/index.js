@@ -1,4 +1,7 @@
 import DropArea from './DropArea';
+
+import DropCanvas from './DropCanvas/DropCanvas';
+
 import dropEffects from './dropEffects';
 import StatelessDraggableList from './DraggableList/StatelessDraggableList';
 import elementsTypes from './elementsTypes';
@@ -12,6 +15,7 @@ export default {
   DraggableElement,
   StatelessDraggableList,
   DropColumns,
+  DropCanvas,
   elementsTypes,
   dropEffects,
 };
@@ -22,6 +26,7 @@ export {
   DraggableElement,
   StatelessDraggableList,
   DropColumns,
+  DropCanvas,
   elementsTypes,
   dropEffects,
 };
