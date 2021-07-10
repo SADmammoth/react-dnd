@@ -1,11 +1,9 @@
-import mapHeight from "../../DragMap/helpers/mapHeight";
-
 export default function calcDropAreaStyle(
   hovered,
   dropAreaSize,
   gap,
   orientation,
-  draggingElement = { getBoundingClientRect: () => [] }
+  draggingElement = { getBoundingClientRect: () => [] },
 ) {
   const calcHovered = (dimensionKey) => ({
     [dimensionKey]: `calc(${
@@ -14,16 +12,16 @@ export default function calcDropAreaStyle(
   });
 
   const calcDefault = (dimensionKey) => {
-    let firstKey = "Top";
-    let secondKey = "Bottom";
-    if (dimensionKey === "width") {
-      firstKey = "Left";
-      secondKey = "Right";
+    let firstKey = 'Top';
+    let secondKey = 'Bottom';
+    if (dimensionKey === 'width') {
+      firstKey = 'Left';
+      secondKey = 'Right';
     }
 
-    const marginFirst = ["margin" + firstKey];
-    const marginSecond = ["margin" + secondKey];
-    const paddingFirst = ["padding" + firstKey];
+    const marginFirst = ['margin' + firstKey];
+    const marginSecond = ['margin' + secondKey];
+    const paddingFirst = ['padding' + firstKey];
 
     return {
       [marginFirst]: `calc(-1 * ${dropAreaSize} / 2 - ${gap})`,
@@ -33,7 +31,7 @@ export default function calcDropAreaStyle(
     };
   };
 
-  const dimensionKey = orientation === "vertical" ? "height" : "width";
+  const dimensionKey = orientation === 'vertical' ? 'height' : 'width';
 
   if (hovered) {
     return calcHovered(dimensionKey);

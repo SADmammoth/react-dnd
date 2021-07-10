@@ -1,19 +1,17 @@
-import DropArea from "./DropArea";
-import dropEffects from "./dropEffects";
-import StatelessDraggableList from "./DraggableList/StatelessDraggableList";
-import elementsTypes from "./elementsTypes";
-import DraggableElement from "./DraggableElement";
-import DragMap from "./DragMap";
-import DraggableList from "./DraggableList";
-import DragGrid from "./DragGrid";
+import DropArea from './DropArea';
+import dropEffects from './dropEffects';
+import StatelessDraggableList from './DraggableList/StatelessDraggableList';
+import elementsTypes from './elementsTypes';
+import DraggableElement from './DraggableElement';
+import DraggableList from './DraggableList';
+import DropColumns from './DropColumns';
 
 export default {
   DropArea,
   DraggableList,
   DraggableElement,
   StatelessDraggableList,
-  DragMap,
-  DragGrid,
+  DropColumns,
   elementsTypes,
   dropEffects,
 };
@@ -23,8 +21,7 @@ export {
   DraggableList,
   DraggableElement,
   StatelessDraggableList,
-  DragMap,
-  DragGrid,
+  DropColumns,
   elementsTypes,
   dropEffects,
 };

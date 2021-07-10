@@ -1,15 +1,16 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 
-import elementsTypes from "../elementsTypes";
-import onDrop from "./helpers/onDrop";
-import drawBody from "./drawBody";
-import checkSnap from "./helpers/checkSnap.js";
-import PropTypes from "prop-types";
+import elementsTypes from '../elementsTypes';
+import onDrop from './helpers/onDrop';
+import drawBody from './drawBody';
+import checkSnap from './helpers/checkSnap.js';
+import PropTypes from 'prop-types';
 
-const DragMap = (props) => {
+const DropColumnsBase = (props) => {
   const [body, setBody] = useState([]);
   const {
     columns,
+    rows,
     map,
     reassignAvatar,
     onDataUpdate,
@@ -40,15 +41,14 @@ const DragMap = (props) => {
         reassignAvatar,
         onDataUpdate,
         createAvatar,
-        indexKey
+        indexKey,
       ),
-    [body, setBody]
+    [body, setBody],
   );
 
   const checkSnapping = useCallback(
-    (index, height, hovered) =>
-      checkSnap(index, height, body, columns, hovered),
-    [body, columns]
+    (index, height, hovered) => checkSnap(index, height, body, rows, hovered),
+    [body, columns],
   );
 
   return (
@@ -63,13 +63,13 @@ const DragMap = (props) => {
         onSnapped,
         onHovered,
         onUnhovered,
-        onDropped
+        onDropped,
       )}
     </div>
   );
 };
 
-DragMap.propTypes = {
+DropColumnsBase.propTypes = {
   columns: PropTypes.number.isRequired,
   rows: PropTypes.number.isRequired,
   map: PropTypes.arrayOf(
@@ -86,7 +86,7 @@ DragMap.propTypes = {
         avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
         style: PropTypes.object,
       }),
-    ])
+    ]),
   ).isRequired,
   reassignAvatar: PropTypes.func.isRequired,
   onDataUpdate: PropTypes.func.isRequired,
@@ -102,14 +102,14 @@ DragMap.propTypes = {
   onDropped: PropTypes.func,
 };
 
-DragMap.defaultProps = {
+DropColumnsBase.defaultProps = {
   snapToGrid: false,
   onSnapped: () => {},
   onHovered: () => {},
   onUnhovered: () => {},
   onDropped: () => {},
-  indexKey: "id",
+  indexKey: 'id',
   snapToGrid: false,
 };
 
-export default DragMap;
+export default DropColumnsBase;

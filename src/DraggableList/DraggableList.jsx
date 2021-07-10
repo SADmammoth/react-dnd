@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 
-import useList from "./useList";
-import PropTypes from "prop-types";
-import StatelessDraggableList from "./StatelessDraggableList";
-import calcDropAreaStyle from "./helpers/calcDropAreaStyle";
+import useList from './useList';
+import PropTypes from 'prop-types';
+import StatelessDraggableList from './StatelessDraggableList';
+import calcDropAreaStyle from './helpers/calcDropAreaStyle';
 
 function DraggableList({
   list,
@@ -25,25 +25,25 @@ function DraggableList({
   const [items, setItems, dragging, reorderList, setDropped] = useList(
     list,
     onNewItem,
-    onDroppedAway
+    onDroppedAway,
   );
 
   const reorderItems = useCallback(
     ({ [indexKey]: sourceId, index: destinationIndex }) => {
       onOrderChange(reorderList(sourceId, destinationIndex));
     },
-    [items]
+    [items],
   );
 
   const handlerWrapper = (handlerFromProps, isHovered) => (
     dragging,
     index,
     accepted,
-    mergeStyle
+    mergeStyle,
   ) => {
     if (accepted) {
       mergeStyle(
-        calcDropAreaStyle(isHovered, dropAreaSize, gap, orientation, dragging)
+        calcDropAreaStyle(isHovered, dropAreaSize, gap, orientation, dragging),
       );
 
       handlerFromProps(dragging, index, accepted, mergeStyle);
@@ -93,7 +93,7 @@ DraggableList.propTypes = {
   onDropped: PropTypes.func,
   onNewItem: PropTypes.func,
   onDroppedAway: PropTypes.func,
-  orientation: PropTypes.oneOf(["vertical", "horizontal"]),
+  orientation: PropTypes.oneOf(['vertical', 'horizontal']),
   dropAreaSize: PropTypes.string,
   gap: PropTypes.string,
 };
@@ -106,7 +106,7 @@ DraggableList.defaultProps = {
   onDropped: () => {},
   onNewItem: () => {},
   onDroppedAway: () => {},
-  orientation: "vertical",
+  orientation: 'vertical',
 };
 
 export default DraggableList;

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import DragMap from "../DragMap";
-import PropTypes from "prop-types";
-import removeKeys from "../helpers/removeKeys";
-import onCreateAvatar from "./helpers/onCreateAvatar";
-import toLinearIndex from "../helpers/toLinearIndex";
+import React, { useEffect, useState } from 'react';
+import DropColumnsBase from '../DropColumnsBase';
+import PropTypes from 'prop-types';
+import removeKeys from '../helpers/removeKeys';
+import onCreateAvatar from './helpers/onCreateAvatar';
+import toLinearIndex from '../helpers/toLinearIndex';
+import fillMap from './helpers/fillMap';
 
-function DragGrid({
+function DropColumns({
   map,
   indexKey,
   columns,
@@ -18,12 +19,14 @@ function DragGrid({
   onUnhovered,
   onDropped,
 
+  dropareaDefaultClassName,
+
   ...props
 }) {
   const [grid, setGrid] = useState(map);
 
   useEffect(() => {
-    setGrid(map);
+    setGrid(fillMap(map, columns, rows, dropareaDefaultClassName));
   }, [map]);
 
   const createAvatarHandler = onCreateAvatar(
@@ -31,7 +34,7 @@ function DragGrid({
     rootElement,
     createAvatar,
     indexKey,
-    setGrid
+    setGrid,
   );
 
   const reassignAvatar = (body, _, index, height) => {
@@ -39,7 +42,7 @@ function DragGrid({
     const linearIndex = toLinearIndex(index, columns);
     const data = removeKeys(
       newBody[linearIndex].avatar && newBody[linearIndex].avatar.props.data,
-      ["originalIndex"]
+      ['originalIndex'],
     );
 
     newBody.splice(linearIndex, 1, {
@@ -51,8 +54,8 @@ function DragGrid({
   };
 
   const style = {
-    display: "grid",
-    grid: `repeat(${columns}, 1fr) / repeat(${rows}, 1fr)`,
+    display: 'grid',
+    grid: `repeat(${rows}, 1fr) / repeat(${columns}, 1fr)`,
   };
 
   const onDataUpdate = (data, array) => {
@@ -60,7 +63,7 @@ function DragGrid({
   };
 
   return (
-    <DragMap
+    <DropColumnsBase
       {...props}
       map={grid}
       columns={columns}
@@ -78,7 +81,7 @@ function DragGrid({
   );
 }
 
-DragGrid.propTypes = {
+DropColumns.propTypes = {
   columns: PropTypes.number.isRequired,
   rows: PropTypes.number.isRequired,
   map: PropTypes.arrayOf(
@@ -94,7 +97,7 @@ DragGrid.propTypes = {
         key: PropTypes.string.isRequired,
         avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
       }),
-    ])
+    ]),
   ).isRequired,
   className: PropTypes.string,
   hiddenClass: PropTypes.string,
@@ -107,4 +110,4 @@ DragGrid.propTypes = {
   onDropped: PropTypes.func,
 };
 
-export default DragGrid;
+export default DropColumns;

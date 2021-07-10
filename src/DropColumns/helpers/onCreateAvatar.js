@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react';
 
-import DraggableElement from "../../DraggableElement";
+import DraggableElement from '../../DraggableElement';
 
-import toLinearIndex from "../../helpers/toLinearIndex";
+import toLinearIndex from '../../helpers/toLinearIndex';
 
-import elementsTypes from "../../elementsTypes";
+import elementsTypes from '../../elementsTypes';
 
-import removeKeys from "../../helpers/removeKeys";
+import removeKeys from '../../helpers/removeKeys';
 
-import dropEffects from "../../dropEffects";
-import mapHeight from "../../DragMap/helpers/mapHeight";
+import dropEffects from '../../dropEffects';
+import mapHeight from '../../DropColumnsBase/helpers/mapHeight';
 
 const onCreateAvatar = (
   columns,
   rootElement,
   createAvatar,
   indexKey,
-  setGrid
+  setGrid,
 ) => (data, height) => {
   const avatar = createAvatar(data, height);
 
@@ -30,7 +30,7 @@ const onCreateAvatar = (
         ...item,
         type,
       }),
-      false
+      false,
     );
   };
 
@@ -40,11 +40,11 @@ const onCreateAvatar = (
         grid,
         height,
         index,
-        elementsTypes.dropArea
+        elementsTypes.dropArea,
       );
 
       const ind = toLinearIndex(index, columns);
-      newGrid[ind] = removeKeys(newGrid[ind], ["style"]);
+      newGrid[ind] = removeKeys(newGrid[ind], ['style']);
       return newGrid;
     });
   };
@@ -55,7 +55,7 @@ const onCreateAvatar = (
         grid,
         height,
         index,
-        elementsTypes.hidden
+        elementsTypes.hidden,
       );
 
       const ind = toLinearIndex(index, columns);
@@ -82,13 +82,12 @@ const onCreateAvatar = (
         avatar={avatar}
         dropEffect={dropEffects.reassign}
         onDragStart={replaceAvatarWithDropArea}
-        onReject={rollback}
-      >
+        onReject={rollback}>
         {avatar}
       </DraggableElement>
     ),
     style: {
-      gridRow: data.index.x + 1 + " / span 2",
+      gridRow: data.index.x + 1 + ' / span 2',
       gridColumn: data.index.y + 1,
     },
   };

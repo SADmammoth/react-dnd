@@ -1,20 +1,20 @@
-import toLinearIndex from "../../helpers/toLinearIndex";
-import elementsTypes from "../../elementsTypes";
+import toLinearIndex from '../../helpers/toLinearIndex';
+import elementsTypes from '../../elementsTypes';
 
 export default function mapHeight(
   index,
   height,
-  columns,
+  rows,
   array,
   action,
-  checkIsSpaceAvailable = true
+  checkIsSpaceAvailable = true,
 ) {
   const newArray = [...array];
 
   let curr = null;
   let indBuff;
-  for (let i = index.x + 1; i < index.x + height; i++) {
-    indBuff = toLinearIndex({ x: i, y: index.y }, columns);
+  for (let i = index.y + 1; i < index.y + height; i++) {
+    indBuff = toLinearIndex({ x: index.x, y: i }, rows);
 
     curr = newArray[indBuff];
 
