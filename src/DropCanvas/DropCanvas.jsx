@@ -6,11 +6,12 @@ function DropCanvas(props) {
   return (
     <Canvas
       size={{ x: '700px', y: '400px' }}
+      resolution={{ x: 10, y: 10 }}
       items={[
         {
           position: {
-            x: '100px',
-            y: '100px',
+            x: 20,
+            y: 20,
           },
           content: (
             <div
