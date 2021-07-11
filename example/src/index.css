@@ -6,6 +6,7 @@
 .original {
   border: red solid 2px;
   background-color: white;
+  z-index: 2;
 }
 
 .avatar {

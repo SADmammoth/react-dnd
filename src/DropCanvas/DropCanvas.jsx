@@ -7,19 +7,24 @@ import canvasReducer from './canvasReducer';
 import PropTypes from 'prop-types';
 import Canvas from '../Canvas';
 
-function DropCanvas({ createAvatar }) {
+function DropCanvas({ createAvatar, showGrid, indexKey }) {
   const [canvas, dispatch] = useReducer(canvasReducer);
   return (
     <DropArea
       onHovered={() => {}}
       setData={() => {}}
-      onDropped={(data, _1, _2, _3, _4, event) => {
+      onDropped={(data, _1, _2, _3, dragging, event) => {
+        console.log(dragging);
+        const { width, height } = dragging.getBoundingClientRect();
+        const clientX = event.pageX - width / 2;
+        const clientY = event.pageY - height / 2;
         dispatch({
           type: 'PLACE',
           data: {
+            id: data[indexKey],
             position: {
-              clientX: event.pageX,
-              clientY: event.pageY,
+              clientX,
+              clientY,
             },
             content: createAvatar(data),
           },
@@ -27,8 +32,9 @@ function DropCanvas({ createAvatar }) {
       }}>
       <Canvas
         size={{ x: '700px', y: '400px' }}
-        //   resolution={{ x: 1000, y: 1000 }}
+        resolution={{ x: 100, y: 100 }}
         items={Object.values(canvas || {})}
+        showGrid={showGrid}
       />
     </DropArea>
   );

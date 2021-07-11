@@ -17,6 +17,22 @@ const App = () => {
     </div>
   );
 
+  const createCanvasItem = (data) => {
+    const { myIndex } = data;
+    return (
+      <DraggableElement
+        id={myIndex}
+        key={myIndex}
+        data={data}
+        rootElement={document}
+        avatar={createAvatar(data)}>
+        <div className="avatar" style={{ height: `calc(50px * 2)` }}>
+          User avatar {myIndex}
+        </div>
+      </DraggableElement>
+    );
+  };
+
   const createDraggableElement = (index, secret, openCode) => {
     return (
       <DraggableElement
@@ -97,6 +113,7 @@ const App = () => {
 
   return (
     <>
+      <DropCanvas createAvatar={createCanvasItem} indexKey="myIndex" showGrid />
       <DropColumns
         rows={2}
         columns={3}
@@ -143,7 +160,6 @@ const App = () => {
         dropAreaSize="50px"
         gap="10px"
       />
-      <DropCanvas createAvatar={createAvatar} />
     </>
   );
 };

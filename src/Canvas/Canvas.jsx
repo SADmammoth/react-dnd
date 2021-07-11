@@ -1,4 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
+
+import getPositionOnCanvas from './helpers/getPositionOnCanvas';
+
+import Grid from './Grid';
+
 import PropTypes from 'prop-types';
 
 function Canvas({ items = [], size, resolution, showGrid }) {
@@ -19,38 +24,29 @@ function Canvas({ items = [], size, resolution, showGrid }) {
     }
   }, [canvas.current, items]);
 
-  const renderedItems = items.map(
-    ({ position: { x, y, clientX, clientY }, content }) => {
-      let actualX = x;
-      let actualY = y;
+  const renderedItems = items.map(({ position, content }) => {
+    console.log(position, actualSize);
+    const canvasPosition = getPositionOnCanvas(
+      position,
+      actualSize,
+      resolution,
+    );
+    let x, y;
 
-      if (clientX && clientY) {
-        console.log(actualSize, clientX, clientY);
-        actualX = clientX - actualSize.left;
-        actualY = clientY - actualSize.top;
-      } else if (resolution) {
-        if (x >= resolution.x || y >= resolution.y) {
-          return;
-        }
-        actualX = (actualSize.x / resolution.x) * x;
-        actualY = (actualSize.y / resolution.y) * y;
-      } else {
-        if (x >= size.x || y >= size.y) {
-          return;
-        }
-      }
-      return (
-        <div
-          style={{
-            position: 'absolute',
-            left: actualX,
-            top: actualY,
-          }}>
-          {content}
-        </div>
-      );
-    },
-  );
+    if (canvasPosition) {
+      ({ x, y } = canvasPosition);
+    }
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: x,
+          top: y,
+        }}>
+        {content}
+      </div>
+    );
+  });
 
   return (
     <div
@@ -61,19 +57,13 @@ function Canvas({ items = [], size, resolution, showGrid }) {
         width: size.x,
         height: size.y,
       }}>
-      {!showGrid || (
-        <div
-          style={{
-            height: '100%',
-            display: 'grid',
-            grid: `repeat(${resolution.x}, 1fr) / repeat(${resolution.y}, 1fr)`,
-          }}>
-          {new Array(resolution.x * resolution.y).fill(
-            <div style={{ border: '1px solid lightgray' }}></div>,
-          )}
-        </div>
+      {!showGrid || !resolution || (
+        <Grid
+          width={parseInt(actualSize.x)}
+          height={parseInt(actualSize.y)}
+          resolution={resolution}
+        />
       )}
-
       {renderedItems}
     </div>
   );
