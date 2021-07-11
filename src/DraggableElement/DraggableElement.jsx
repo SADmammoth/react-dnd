@@ -1,18 +1,18 @@
-import React, { useEffect, useReducer, useRef, useMemo } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import snapToDropArea from "./helpers/snapToDropArea";
-import moveElementToCenterCursor from "./helpers/moveElementToCenterCursor";
+import React, { useEffect, useReducer, useRef, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import snapToDropArea from './helpers/snapToDropArea';
+import moveElementToCenterCursor from './helpers/moveElementToCenterCursor';
 import draggableElementReducer, {
   actionTypes,
   init,
-} from "./helpers/draggableElementReducer";
-import setDragImage from "./helpers/setDragImage";
-import setTransferData from "./helpers/setTransferData";
-import _ from "lodash";
-import dropEffects from "../dropEffects";
-import callDropAreaDragStart from "./helpers/callDropAreaDragStart";
-import callDropAreaDragEnd from "./helpers/callDropAreaDragEnd";
+} from './helpers/draggableElementReducer';
+import setDragImage from './helpers/setDragImage';
+import setTransferData from './helpers/setTransferData';
+import _ from 'lodash';
+import dropEffects from '../dropEffects';
+import callDropAreaDragStart from './helpers/callDropAreaDragStart';
+import callDropAreaDragEnd from './helpers/callDropAreaDragEnd';
 
 function DraggableElement({
   className,
@@ -63,8 +63,8 @@ function DraggableElement({
   };
 
   useEffect(() => {
-    if (state.dragging) rootElement.addEventListener("dragover", mouseMove);
-    return () => rootElement.removeEventListener("dragover", mouseMove);
+    if (state.dragging) rootElement.addEventListener('dragover', mouseMove);
+    return () => rootElement.removeEventListener('dragover', mouseMove);
   }, [state.dragging]);
 
   useEffect(() => {
@@ -78,24 +78,23 @@ function DraggableElement({
     () =>
       Object.fromEntries(
         Object.entries(data).filter(([dataKey, dataValue]) =>
-          dataKey.startsWith("data-")
-        )
+          dataKey.startsWith('data-'),
+        ),
       ),
-    [data]
+    [data],
   );
 
   return (
     <div
       ref={dragged}
       id={classNames({ dragging: state.dragging })}
-      className={classNames("draggable", className)}
+      className={classNames('draggable', className)}
       draggable="true"
       style={{ ...propsStyle, ...state.style }}
       data-height={height}
       onDragStart={dragStart}
       onDragEnd={dragEnd}
-      {...attributes}
-    >
+      {...attributes}>
       {state.dragging && avatar ? avatar : children}
     </div>
   );
@@ -121,7 +120,7 @@ DraggableElement.defaultProps = {
   onDragEnd: () => {},
   style: {},
   height: 1,
-  rootElement: document.getElementById("root"),
+  rootElement: document.getElementById('root'),
   dropEffect: dropEffects.all,
 };
 

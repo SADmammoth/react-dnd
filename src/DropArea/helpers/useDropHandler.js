@@ -1,6 +1,8 @@
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
-import checkIfAccepted from "./checkIfAccepted";
+import getDraggingElement from './getDraggingElement';
+
+import checkIfAccepted from './checkIfAccepted';
 
 export default function useDropHandler(
   hovered,
@@ -9,13 +11,15 @@ export default function useDropHandler(
   index,
   mergeStyle,
   setData,
-  onDropped
+  onDropped,
 ) {
   return useCallback(
     (e) => {
       if (hovered) {
+        const dragging = getDraggingElement();
+
         setHovered(false);
-        const data = JSON.parse(e.dataTransfer.getData("application/json"));
+        const data = JSON.parse(e.dataTransfer.getData('application/json'));
 
         const accepted = checkIfAccepted(accept);
 
@@ -25,6 +29,7 @@ export default function useDropHandler(
             ...data,
             index,
             originalIndex,
+            dragging,
           });
         }
 
@@ -35,13 +40,15 @@ export default function useDropHandler(
           },
           index,
           accepted,
-          mergeStyle
+          mergeStyle,
+          dragging,
+          e,
         );
 
         return accepted;
       }
       return false;
     },
-    [hovered]
+    [hovered],
   );
 }

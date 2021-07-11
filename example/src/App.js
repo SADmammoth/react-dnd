@@ -143,7 +143,7 @@ const App = () => {
         dropAreaSize="50px"
         gap="10px"
       />
-      <DropCanvas />
+      <DropCanvas createAvatar={createAvatar} />
     </>
   );
 };

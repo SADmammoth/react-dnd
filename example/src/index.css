@@ -12,6 +12,7 @@
   border: 2px green solid;
   background-color: white;
   transition: all 50ms ease-in;
+  z-index: 2;
 }
 
 .list-droparea.hovered {
