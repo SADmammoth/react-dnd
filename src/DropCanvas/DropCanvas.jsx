@@ -1,20 +1,45 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useRef, useCallback } from 'react';
+
+import checkSnap from './helpers/checkSnap';
 
 import DropArea from '../DropArea';
 
-import canvasReducer from './canvasReducer';
+import canvasReducer from './helpers/canvasReducer';
 
 import PropTypes from 'prop-types';
 import Canvas from '../Canvas';
 
-function DropCanvas({ createAvatar, showGrid, indexKey }) {
+function DropCanvas({ createAvatar, showGrid, indexKey, size, resolution }) {
   const [canvas, dispatch] = useReducer(canvasReducer);
+  const canvasRef = useRef({});
+
+  const checkSnapHandler = useCallback(
+    (_1, _2, _3, event) => {
+      if (canvasRef.current) {
+        const {
+          width,
+          height,
+          left,
+          top,
+        } = canvasRef.current.getBoundingClientRect();
+        return checkSnap(
+          {
+            x: event.clientX - left,
+            y: event.clientY - top,
+          },
+          { x: width, y: height },
+          resolution,
+        );
+      }
+    },
+    [canvasRef.current],
+  );
   return (
     <DropArea
+      checkSnap={checkSnapHandler}
       onHovered={() => {}}
       setData={() => {}}
       onDropped={(data, _1, _2, _3, dragging, event) => {
-        console.log(dragging);
         const { width, height } = dragging.getBoundingClientRect();
         const clientX = event.pageX - width / 2;
         const clientY = event.pageY - height / 2;
@@ -31,8 +56,9 @@ function DropCanvas({ createAvatar, showGrid, indexKey }) {
         });
       }}>
       <Canvas
-        size={{ x: '700px', y: '400px' }}
-        resolution={{ x: 100, y: 100 }}
+        ref={canvasRef}
+        size={size}
+        resolution={resolution}
         items={Object.values(canvas || {})}
         showGrid={showGrid}
       />

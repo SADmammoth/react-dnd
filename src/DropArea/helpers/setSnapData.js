@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export default function setSnapData(element, dropArea, onSnapped, mergeStyle) {
   const { left, top } = dropArea.getBoundingClientRect();
@@ -7,7 +7,7 @@ export default function setSnapData(element, dropArea, onSnapped, mergeStyle) {
   const snapTop =
     top + window.scrollY + parseInt(getComputedStyle(dropArea).paddingTop);
 
-  element.setAttribute("data-snap", `${snapLeft},${snapTop}`);
+  element.setAttribute('data-snap', `${snapLeft},${snapTop}`);
 
   onSnapped(element, left, top, mergeStyle);
 }

@@ -6,68 +6,67 @@ import Grid from './Grid';
 
 import PropTypes from 'prop-types';
 
-function Canvas({ items = [], size, resolution, showGrid }) {
-  const canvas = useRef({});
+const Canvas = React.forwardRef(
+  ({ items = [], size, resolution, showGrid }, forwardedRef) => {
+    const [actualSize, setActualSize] = useState({});
 
-  const [actualSize, setActualSize] = useState({});
+    useEffect(() => {
+      if (forwardedRef.current) {
+        const {
+          width,
+          height,
+          left,
+          top,
+        } = forwardedRef.current.getBoundingClientRect();
 
-  useEffect(() => {
-    if (canvas.current) {
-      const {
-        width,
-        height,
-        left,
-        top,
-      } = canvas.current.getBoundingClientRect();
+        setActualSize({ x: width, y: height, left, top });
+      }
+    }, [forwardedRef.current, items]);
 
-      setActualSize({ x: width, y: height, left, top });
-    }
-  }, [canvas.current, items]);
+    const renderedItems = items.map(({ position, content }) => {
+      const canvasPosition = getPositionOnCanvas(
+        position,
+        actualSize,
+        resolution,
+      );
+      let x, y;
 
-  const renderedItems = items.map(({ position, content }) => {
-    console.log(position, actualSize);
-    const canvasPosition = getPositionOnCanvas(
-      position,
-      actualSize,
-      resolution,
-    );
-    let x, y;
+      if (canvasPosition) {
+        ({ x, y } = canvasPosition);
+      }
+      return (
+        <div
+          style={{
+            position: 'absolute',
+            left: x,
+            top: y,
+          }}>
+          {content}
+        </div>
+      );
+    });
 
-    if (canvasPosition) {
-      ({ x, y } = canvasPosition);
-    }
     return (
       <div
+        ref={forwardedRef}
         style={{
-          position: 'absolute',
-          left: x,
-          top: y,
+          position: 'relative',
+          background: 'white',
+          width: size.x,
+          height: size.y,
         }}>
-        {content}
+        {!showGrid || !resolution || (
+          <Grid
+            width={parseInt(actualSize.x)}
+            height={parseInt(actualSize.y)}
+            resolution={resolution}
+          />
+        )}
+        {renderedItems}
       </div>
     );
-  });
-
-  return (
-    <div
-      ref={canvas}
-      style={{
-        position: 'relative',
-        background: 'white',
-        width: size.x,
-        height: size.y,
-      }}>
-      {!showGrid || !resolution || (
-        <Grid
-          width={parseInt(actualSize.x)}
-          height={parseInt(actualSize.y)}
-          resolution={resolution}
-        />
-      )}
-      {renderedItems}
-    </div>
-  );
-}
+  },
+);
 
 Canvas.propTypes = {
   items: PropTypes.shape({

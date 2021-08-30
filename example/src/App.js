@@ -113,7 +113,13 @@ const App = () => {
 
   return (
     <>
-      <DropCanvas createAvatar={createCanvasItem} indexKey="myIndex" showGrid />
+      <DropCanvas
+        size={{ x: '700px', y: '400px' }}
+        resolution={{ x: 100, y: 100 }}
+        createAvatar={createCanvasItem}
+        indexKey="myIndex"
+        showGrid
+      />
       <DropColumns
         rows={2}
         columns={3}
@@ -125,18 +131,18 @@ const App = () => {
         // accept={{ secret: "code1", "data-code": "openCode1" }}
         indexKey="myIndex"
         hiddenClass={'hidden'}
-        reassignAvatar={(data) => {
-          console.log(data, 'reassignAvatar');
-        }}
-        onDataUpdate={(data) => {
-          console.log(data, 'onDataUpdate');
-        }}
-        onDropped={(args) => {
-          console.log(args, 'onDropped');
-        }}
-        onHovered={(...args) => console.log(...args, 'onHovered')}
-        onUnhovered={(...args) => console.log(...args, 'onUnhovered')}
-        onSnapped={(...args) => console.log(...args, 'onSnapped')}
+        // reassignAvatar={(data) => {
+        //   console.log(data, 'reassignAvatar');
+        // }}
+        // onDataUpdate={(data) => {
+        //   console.log(data, 'onDataUpdate');
+        // }}
+        // onDropped={(args) => {
+        //   console.log(args, 'onDropped');
+        // }}
+        // onHovered={(...args) => console.log(...args, 'onHovered')}
+        // onUnhovered={(...args) => console.log(...args, 'onUnhovered')}
+        // onSnapped={(...args) => console.log(...args, 'onSnapped')}
       />
       {added === false && item0}
       <DraggableList
@@ -144,9 +150,9 @@ const App = () => {
         list={tasks.map((num) =>
           createDraggableElement(num, 'code2', 'openCode2'),
         )}
-        onOrderChange={(data) => {
-          console.log(data, 'onOrderChange');
-        }}
+        // onOrderChange={(data) => {
+        //   console.log(data, 'onOrderChange');
+        // }}
         indexKey="myIndex"
         onNewItem={(data) => {
           console.log(data, 'onNewItem');

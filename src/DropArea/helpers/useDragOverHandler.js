@@ -1,11 +1,11 @@
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
-import setSnapData from "./setSnapData";
+import setSnapData from './setSnapData';
 
-import checkIfAccepted from "./checkIfAccepted";
-import getDraggingElement from "./getDraggingElement";
-import dropEffects from "../../dropEffects";
-import _ from "lodash";
+import checkIfAccepted from './checkIfAccepted';
+import getDraggingElement from './getDraggingElement';
+import dropEffects from '../../dropEffects';
+import _ from 'lodash';
 
 export default function useOnDragOverHandler(
   accept,
@@ -14,7 +14,7 @@ export default function useOnDragOverHandler(
   hovered,
   setHovered,
   checkSnap,
-  onSnapped
+  onSnapped,
 ) {
   return useCallback(
     (e) => {
@@ -35,7 +35,7 @@ export default function useOnDragOverHandler(
       setHovered(true);
       e.preventDefault();
 
-      const isAlreadySnapped = dragging.hasAttribute("data-snap");
+      const isAlreadySnapped = dragging.hasAttribute('data-snap');
       if (isAlreadySnapped) {
         return;
       }
@@ -45,8 +45,9 @@ export default function useOnDragOverHandler(
         checkSnap &&
         checkSnap(
           index,
-          parseInt(dragging.getAttribute("data-height")),
-          hovered
+          parseInt(dragging.getAttribute('data-height')),
+          hovered,
+          e,
         );
 
       if (isSnappable) {
@@ -56,6 +57,6 @@ export default function useOnDragOverHandler(
       e.dataTransfer.dropEffect = dropEffects.all;
       return true;
     },
-    [accept, hovered, index]
+    [accept, hovered, index],
   );
 }
